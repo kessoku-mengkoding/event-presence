@@ -13,6 +13,14 @@ class GroupMember extends Model
     use HasFactory;
     use HasUuids;
 
+    protected $table = 'groupmembers';
+
+    protected $fillable = [
+        'user_id',
+        'group_id',
+        'role',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

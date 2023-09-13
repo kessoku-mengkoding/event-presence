@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('groupmember_id');
             $table->uuid('timetable_id');
             $table->string('status');
+            $table->boolean('is_valid');
             $table->timestamps();
 
             $table->foreign('groupmember_id')->references('id')->on('groupmembers')->onDelete('cascade');

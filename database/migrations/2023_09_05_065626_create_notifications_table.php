@@ -16,6 +16,9 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->string('title');
             $table->text('message');
+            $table->string('accept_link')->nullable();
+            $table->string('reject_link')->nullable();
+            $table->enum('type', ['message', 'invite']);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

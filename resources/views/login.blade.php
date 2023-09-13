@@ -27,7 +27,7 @@
       </div>
       <div>
         <label for="password">Password</label>
-        <input type="password" name="password" id="" class="border-2 border-black"
+        <input type="password" name="password" id="" class="border-2 border-black
           @error('password') border-red-500 @enderror" />
         @error('password')
           <div class="text-red-500">{{ $message }}</div>
@@ -35,6 +35,7 @@
       </div>
       <button class="rounded-lg bg-blue-500 px-5 py-1 text-white">Login</button>
     </form>
+    <a href="/register" class="underline">Don't have account?</a>
   </div>
 </body>
 

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->json('location')->nullable();
+            $table->double('radius_meter')->nullable();
             $table->timestamp('start_date');
             $table->timestamp('end_date')->nullable();
             $table->uuid('group_id');

@@ -15,6 +15,14 @@
     <form action="/register" method="POST">
       @csrf
       <div>
+        <label for="username">Username</label>
+        <input type="text" name="username" id=""
+          class="@error('username') border-red-500 @enderror border-2 border-black" />
+        @error('username')
+          <div class="text-red-500">{{ $message }}</div>
+        @enderror
+      </div>
+      <div>
         <label for="email">Email</label>
         <input type="text" name="email" id=""
           class="border-2 border-black
