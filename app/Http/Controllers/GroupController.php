@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\Invitation;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -44,12 +45,19 @@ class GroupController extends Controller
                 ->where('user_id', Auth::id())
                 ->first();
 
-        // dd($user_in_group);
+        $pendings = Invitation::with(['user'])
+                        ->where('group_id', $id)
+                        ->get();
+
+        $timetable = new TimetableController();
+        $timetables = $timetable->getListInGroup($id);
 
         return view('group-detail', [
             'group' => $group,
             'user_in_group' => $user_in_group,
-            'superuser' => ['admin', 'owner']
+            'superuser' => ['admin', 'owner'],
+            'pendings' => $pendings,
+            'timetables' => $timetables
         ]);
     }
 

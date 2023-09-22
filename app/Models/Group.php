@@ -22,4 +22,8 @@ class Group extends Model
         return $this->hasMany(Timetable::class);
     }
 
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
 }

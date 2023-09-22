@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupMemberController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RegisterController;
@@ -38,8 +39,12 @@ Route::get('/groups/{id}/detail', [GroupController::class, 'detail'])->middlewar
 Route::delete('/groups/{id}', [GroupController::class, 'destroy'])->middleware('auth');
 Route::post('/groups/join', [GroupController::class, 'join'])->middleware('auth');
 Route::post('/groups/join-via-invite', [GroupController::class, 'join'])->middleware('auth');
-Route::post('/groups/{id}/invite', [GroupController::class, 'invite'])->middleware('auth');
 Route::delete('/groups/{group_id}/member/{member_id}', [GroupMemberController::class, 'destroy'])->middleware('auth');
 Route::put('/groups/{group_id}/member/{member_id}/role', [GroupMemberController::class, 'destroy'])->middleware('auth');
 
 Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth');
+Route::get('/invitations', [InvitationController::class, 'index'])->middleware('auth');
+Route::put('/invitations/{id}/accept', [InvitationController::class, 'accept'])->middleware('auth');
+Route::put('/invitations/{id}/decline', [InvitationController::class, 'decline'])->middleware('auth');
+
+Route::post('/groups/{id}/invite', [InvitationController::class, 'create'])->middleware('auth');

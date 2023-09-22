@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Personalization::class);
     }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
 }

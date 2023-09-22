@@ -41,6 +41,7 @@
   </form>
   <br>
   <a href="/notifications" class="btn">notifications</a>
+  <a href="/invitations" class="btn">invitations</a>
 </body>
 
 </html>

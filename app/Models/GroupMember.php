@@ -35,4 +35,9 @@ class GroupMember extends Model
     {
         return $this->belongsTo(Group::class);
     }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
 }

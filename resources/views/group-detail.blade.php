@@ -38,9 +38,11 @@
       </li>
     @endforeach
   </ul>
+
   <br>
   <br>
   <br>
+
   <h1>Invite member</h1>
   <div class="flex">
     <p>invite by user id</p>
@@ -54,6 +56,26 @@
   <br>
   <br>
   <br>
+
+  <h1>Pending</h1>
+  <ul>
+    @foreach ($pendings as $pending)
+      <li class="flex gap-12 border border-black">
+        <p>{{ $pending->user->username }}</p>
+        <p>{{ $pending->created_at }}</p>
+        <form action="/invitations/{{ $pending->id }}/decline" method="POST">
+          @csrf
+          @method('PUT')
+          <button class="bg-red-500">Cancel</button>
+        </form>
+      </li>
+    @endforeach
+  </ul>
+
+  <br>
+  <br>
+  <br>
+
   @if ($user_in_group->role == 'owner')
     <form action="/groups/{{ $group->id }}" method="POST">
       @csrf
@@ -62,9 +84,11 @@
     </form>
   @endif
 
+  <br>
+  <br>
+  <br>
 
-
-
+  <h1>Timetables</h1>
+  
 </body>
-
 </html>
