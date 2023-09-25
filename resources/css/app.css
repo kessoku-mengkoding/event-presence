@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    /* @apply border border-violet-600; */
+}
+
 .link {
     @apply text-blue-500 underline;
 }
@@ -11,5 +15,114 @@
 }
 
 .input {
-    @apply px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    @apply px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent hover:shadow-md transition duration-300;
+}
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.btn-primary {
+    @apply w-full rounded-full bg-black py-3 font-semibold text-white transition-all duration-300 ease-in-out hover:bg-black/70;
+}
+.btn-primary-sm {
+    @apply px-5 rounded-full bg-black py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:bg-black/70;
+}
+.btn-sm-no-color {
+    @apply px-5 rounded-full py-2 font-semibold transition-all duration-300 ease-in-out;
+}
+
+.btn-border {
+    @apply px-6 py-2 rounded-full font-semibold border border-slate-300 text-black cursor-pointer block w-max;
+}
+
+.transition {
+    @apply transition-all duration-300 ease-in-out
+}
+
+.text-gradient-mint-blue-dark {
+    background: -webkit-linear-gradient(-70deg, #a2facf 0%, #64acff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-coral-yellow-dark {
+    background: -webkit-linear-gradient(-70deg, #ff7170 0%, #ffe57f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-turq-purple-dark {
+    background: -webkit-linear-gradient(-70deg, #3bf0e4 0%, #bca1f7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-blue-green {
+    background: -webkit-linear-gradient(-70deg, #2188ff 0%, #01a49e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-red-orange {
+    background: -webkit-linear-gradient(-70deg, #ed4e50 0%, #f06f00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-purple-coral {
+    background: -webkit-linear-gradient(-70deg, #9867f0 0%, #ed4e50 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-blue-purple {
+    background: -webkit-linear-gradient(-70deg, #2188ff 0%, #804eda 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-mint-blue {
+    background: linear-gradient(271.72deg, #a2facf 7.09%, #64acff 96.61%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.text-gradient-pink-blue {
+    background: -webkit-linear-gradient(-70deg, #db469f 0%, #2188ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-mktg {
+    background: -webkit-linear-gradient(
+        -70deg,
+        var(--mktg-accent-primary, #9867f0) 0%,
+        var(--mktg-accent-secondary, #ed4e50) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-copilot {
+    background: -webkit-linear-gradient(300deg, #93f5ec 20%, #a77bf3 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+}
+.text-gradient-premium-support {
+    background: -webkit-linear-gradient(0deg, #79c0ff 0%, #d2a8ff 57.57%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
 }

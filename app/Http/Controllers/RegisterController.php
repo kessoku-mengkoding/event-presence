@@ -12,7 +12,7 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        return view('register');
+        return view('auth.register');
     }
 
     public function store(Request $request)
@@ -20,6 +20,7 @@ class RegisterController extends Controller
         $validatedData = $request->validate([
             'email' => 'required|email:dns|unique:users',
             'username' => 'required|unique:users',
+            'name' => 'required',
             'password' => 'required|min:5',
             'confirm_password' => 'required',
         ]);
@@ -31,6 +32,6 @@ class RegisterController extends Controller
         $validatedData['password'] = Hash::make($validatedData['password']);
         User::create($validatedData);
 
-        return redirect('/login')->with('regis_success', 'Registration Success');
+        return redirect('/sign-in')->with('message','Register success');
     }
 }

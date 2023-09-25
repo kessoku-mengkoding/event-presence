@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
+    public function index()
+    {
+        return view('groups.index', [
+            'title' => 'Groups'
+        ]);
+    }
+
     public function indexCreate()
     {
         return view('create-group');
@@ -80,7 +87,7 @@ class GroupController extends Controller
         $notification->reject_link = '/';
         $notification->save();
 
-        return redirect('/groups/'. $request->id .'/detail');
+        return redirect()->back()->with('success', 'Invite success');
     }
 
     public function destroy($id)

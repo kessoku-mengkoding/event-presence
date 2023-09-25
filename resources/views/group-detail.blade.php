@@ -88,7 +88,9 @@
   <br>
   <br>
 
+  <a href="/timetables/{{ $group->id }}/new" class="btn">Create Timetable</a>
   <h1>Timetables</h1>
-  
+
 </body>
+
 </html>

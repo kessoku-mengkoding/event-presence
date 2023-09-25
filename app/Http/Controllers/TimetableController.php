@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class TimetableController extends Controller
 {
+    public function viewCreate($group_id)
+    {
+        return view('new-timetable', [
+            'group_id' => $group_id
+        ]);
+    }
+
     public function create(Request $request)
     {
         $timetable = new Timetable();
@@ -25,7 +32,6 @@ class TimetableController extends Controller
 
     public function getListInGroup($group_id)
     {
-        return Timetable::where('group_id', $group_id)
-                        ->get();
+        return Timetable::where('group_id', $group_id)->get();
     }
 }
