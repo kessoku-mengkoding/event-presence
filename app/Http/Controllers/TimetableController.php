@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Timetable;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,11 @@ class TimetableController extends Controller
 {
     public function viewCreate($group_id)
     {
-        return view('new-timetable', [
-            'group_id' => $group_id
+        $group = Group::where('id', $group_id)->first();
+        return view('timetables.new', [
+            'group_id' => $group_id,
+            'group' => $group,
+            'title' => 'New Timetable'
         ]);
     }
 
