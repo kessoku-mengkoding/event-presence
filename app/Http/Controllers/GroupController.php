@@ -15,23 +15,43 @@ class GroupController extends Controller
 {
     public function index()
     {
+        $groupmembers = GroupMember::with('group')->where('user_id', Auth::id())->get();
+
         return view('groups.index', [
-            'title' => 'Groups'
+            'title' => 'Groups',
+            'groupmembers' => $groupmembers
         ]);
     }
 
     public function indexCreate()
     {
-        return view('create-group');
+        return view('groups.create', [
+            'title' => 'Create Group'
+        ]);
     }
 
     public function create(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'description' => ''
+        ]);
+
+        // handle image
+        if($request->file('image')){
+            $image_controller = new ImageController();
+            $image_link = $image_controller->upload_external($request);
+        }
+
+        // create group
         $group = new Group();
         $group->name = $request->name;
+        $group->image_path = $image_link ?? NULL;
         $group->description = $request->description;
+
         $group->save();
 
+        // add user to group as groupmember
         $group_member = new GroupMember();
         $groum_member_data = [
             'user_id' => Auth::id(),
@@ -41,7 +61,7 @@ class GroupController extends Controller
         $group_member->fill($groum_member_data);
         $group_member->save();
 
-        return redirect('/groups/'. $group->id .'/detail');
+        return redirect('/groups')->with('message', 'Group created');
     }
 
     public function detail($id)
@@ -59,7 +79,8 @@ class GroupController extends Controller
         $timetable = new TimetableController();
         $timetables = $timetable->getListInGroup($id);
 
-        return view('group-detail', [
+        return view('groups.detail', [
+            'title' => 'Group Detail',
             'group' => $group,
             'user_in_group' => $user_in_group,
             'superuser' => ['admin', 'owner'],
@@ -68,8 +89,24 @@ class GroupController extends Controller
         ]);
     }
 
+    public function join_view(Request $request) {
+        return view('groups.join', [
+            'title' => 'Join Group'
+        ]);
+    }
+
     public function join(Request $request)
     {
+        $group = DB::select('SELECT id FROM groups WHERE id = ?', [$request->id]);
+        if(!$group) {
+            return back()->with('message', 'Group not found');
+        }
+
+        $already_join = DB::select('SELECT id FROM groupmembers WHERE user_id = ? && group_id = ?', [Auth::id(), $request->id]);
+        if($already_join) {
+            return back()->with('message', 'You alredy join this group before');
+        }
+
         $groupMember = new GroupMember();
         $groupMember->user_id = Auth::id();
         $groupMember->group_id = $request->id;
@@ -78,22 +115,26 @@ class GroupController extends Controller
         return redirect('/groups/'. $request->id .'/detail');
     }
 
-    public function invite($id, Request $request)
+    public function join_by_qr(Request $request)
     {
-        $notification = new Notification();
-        $notification->title = 'Group Invitation';
-        $notification->message = 'Youre invited to some group';
-        $notification->accept_link = '/';
-        $notification->reject_link = '/';
-        $notification->save();
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+        ]);
 
-        return redirect()->back()->with('success', 'Invite success');
+        if ($request->file('image')) {
+            $image_controller = new ImageController();
+            $file_url = $image_controller->upload_external($request);
+            $decodedData = $image_controller->decode_qr_image($file_url);
+
+            dd($decodedData);
+        } else {
+            return back()->with('message', 'Something went wrong');
+        }
     }
 
     public function destroy($id)
     {
         DB::delete('DELETE FROM groups WHERE id = ?', [$id]);
-        $userController = new UserController();
-        return $userController->index();
+        return redirect('/groups')->with('message', 'Group deleted');
     }
 }

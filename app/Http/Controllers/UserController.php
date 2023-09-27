@@ -31,7 +31,7 @@ class UserController extends Controller
             'title' => 'Ongoing'
         ]);
     }
-    
+
     public function upcoming() {
         return view('home.upcoming', [
             'title' => 'Upcoming'

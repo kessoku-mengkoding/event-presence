@@ -5,21 +5,33 @@
     <li class="hover:underline">Statistic</li>
   </ul>
   <div class="flex items-center">Logo</div>
-  <ul class="flex items-center gap-8">
-    <li class="hover:underline">Notification</li>
-    <li class="hover:underline">Invitation</li>
+  <ul class="flex items-center gap-6">
+    <li>
+      <a href="/invitations" class="invitations-btn">
+        <i class="fa-solid fa-paper-plane fa-xl"></i>
+        <i class="fa-regular fa-paper-plane fa-xl"></i>
+      </a>
+    </li>
+    <li>
+      <a href="/notifications" class="notification-btn">
+        <i class="fa-solid fa-bell fa-xl"></i>
+        <i class="fa-regular fa-bell fa-xl"></i>
+      </a>
+    </li>
 
     <div class="dropdown relative inline-block">
       <div class="mt-1 inline-flex h-12 w-12 items-center overflow-clip rounded-full bg-gray-300">
         <img src="{{ auth()->user()->profile_picture_path }}" alt="Profile Picture">
       </div>
       <div class="dropdown-menu absolute right-0 hidden pt-4 text-gray-700">
-        <div class="w-[300px] rounded-xl border bg-white p-8">
+        <div class="w-[300px] rounded-xl border bg-white px-8 py-6 drop-shadow-lg">
           <a href="/profile/me" class="cursor-pointer">
             <div class="mx-auto h-24 w-24 overflow-clip rounded-full bg-gray-300">
               <img src="{{ auth()->user()->profile_picture_path }}" alt="Profile Picture">
             </div>
-            <h1 class="mt-2 text-center text-xl font-semibold">{{ auth()->user()->username }}</h1>
+            <h1 class="text-gradient-pink-blue pt-2 text-center text-xl font-semibold">{{ auth()->user()->username }}
+            </h1>
+            <h3 class="pt-1 text-center text-sm">{{ auth()->user()->name }}</h3>
           </a>
           <hr class="my-3">
           <form action="/logout" method="POST"> @csrf @method('POST')

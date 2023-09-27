@@ -35,8 +35,33 @@
     @apply px-6 py-2 rounded-full font-semibold border border-slate-300 text-black cursor-pointer block w-max;
 }
 
-.transition {
-    @apply transition-all duration-300 ease-in-out
+.transitions {
+    @apply transition-all duration-300 ease-in-out;
+}
+
+.group-card:hover .group-card-shadow {
+    @apply flex;
+}
+
+.fa-solid.fa-bell {
+    display: none;
+}
+.notification-btn:hover .fa-regular.fa-bell {
+    display: none;
+}
+.notification-btn:hover .fa-solid.fa-bell {
+    display: inline-block;
+}
+
+
+.fa-solid.fa-paper-plane {
+    display: none;
+}
+.invitations-btn:hover .fa-regular.fa-paper-plane {
+    display: none;
+}
+.invitations-btn:hover .fa-solid.fa-paper-plane {
+    display: inline-block;
 }
 
 .text-gradient-mint-blue-dark {

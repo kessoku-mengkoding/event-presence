@@ -7,32 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
-    // public function upload(Request $request)
-    // {
-    //     $apiKey = env('IMGBB_API_KEY');
-    //     $client = new Client();
-
-    //     $response = $client->post('https://api.imgbb.com/1/upload', [
-    //         'headers' => [
-    //             'Authorization' => 'Bearer ' . $apiKey,
-    //         ],
-    //         'multipart' => [
-    //             [
-    //                 'name' => 'image',
-    //                 'contents' => fopen($request->file('image')->path(), 'r'),
-    //             ],
-    //         ],
-    //     ]);
-
-    //     $responseData = json_decode($response->getBody());
-
-    //     return response()->json($responseData);
-    // }
-
-    public function upload(Request $request)
+    public function upload_external(Request $request)
     {
         $apiKey = env('IMGBB_API_KEY');
 
@@ -47,12 +26,20 @@ class ImageController extends Controller
         return $imageUrl;
     }
 
+    public function decode_qr_image($file_url)
+    {
+        // http://api.qrserver.com/v1/read-qr-code/?fileurl=http%3A%2F%2Fapi.qrserver.com%2Fv1%2Fcreate-qr-code%2F%3Fdata%3DHelloWorld
+        $response = Http::get('http://api.qrserver.com/v1/read-qr-code/?fileurl='. urlencode($file_url));
+
+        dd($file_url, $response);
+    }
+
     public function changeProfilePicture($id, Request $request)
     {
         $id = $id == 'me' ? Auth::id() : $id;
 
         try {
-            $imageUrl = $this->upload($request);
+            $imageUrl = $this->upload_external($request);
 
             if ($imageUrl) {
                 DB::table('users')

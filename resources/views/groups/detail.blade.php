@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.main')
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  @vite('resources/css/app.css')
-  <title>Document</title>
-</head>
-
-<body>
+@section('content')
   <h1> Group name: {{ $group->name }} </h1>
   <p>Group Id: {{ $group->id }}</p>
   <p>Group Description: {{ $group->description }}</p>
@@ -45,11 +36,11 @@
 
   <h1>Invite member</h1>
   <div class="flex">
-    <p>invite by user id</p>
+    <p>invite by email or username</p>
     <form action="/groups/{{ $group->id }}/invite" method="POST">
       @csrf
       @method('POST')
-      <input type="text" name="user_id" id="" class="input">
+      <input type="text" name="key" id="" class="input">
     </form>
   </div>
 
@@ -90,7 +81,4 @@
 
   <a href="/timetables/{{ $group->id }}/new" class="btn">Create Timetable</a>
   <h1>Timetables</h1>
-
-</body>
-
-</html>
+@endsection
