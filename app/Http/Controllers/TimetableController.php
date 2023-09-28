@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\Timetable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TimetableController extends Controller
 {
@@ -20,18 +21,33 @@ class TimetableController extends Controller
 
     public function create(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string',
+            'lat' => 'required|numeric|gte:-90|lte:90',
+            'long' => 'required|numeric|gte:-1800|lte:180',
+            'address' => 'required|string',
+            'radius_meter' => 'required|numeric|gt:0',
+            'lateness_tolerance' => 'required|numeric|gte:0',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
+            'group_id' => 'required',
+            'created_by' => 'required'
+        ]);
+
         $timetable = new Timetable();
         $timetable->title = $request->title;
-        $timetable->description = $request->description;
-        $timetable->location = $request->location;
+        $timetable->latitude = $request->lat;
+        $timetable->longitude = $request->long;
+        $timetable->address = $request->address;
         $timetable->radius_meter = $request->radius_meter;
-        $timetable->start_date = $request->start_date;
-        $timetable->end_date = $request->end_date;
+        $timetable->lateness_tolerance = $request->lateness_tolerance;
+        $timetable->start = $request->start;
+        $timetable->end = $request->end;
         $timetable->group_id = $request->group_id;
-        $timetable->created_bt = $request->created_by_user_id;
+        $timetable->created_by = Auth::id();
         $timetable->save();
 
-        return redirect()->back()->with('success', 'Timetable created');
+        return redirect()->back()->with('message', 'Timetable created');
     }
 
     public function getListInGroup($group_id)

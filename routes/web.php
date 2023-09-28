@@ -65,3 +65,4 @@ Route::put('/invitations/{id}/decline', [InvitationController::class, 'decline']
 Route::post('/groups/{id}/invite', [InvitationController::class, 'create'])->middleware('auth');
 
 Route::get('/timetables/{group_id}/new', [TimetableController::class, 'viewCreate'])->middleware('auth');
+Route::post('/timetables', [TimetableController::class, 'create'])->middleware('auth');

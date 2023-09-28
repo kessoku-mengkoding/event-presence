@@ -23,7 +23,7 @@
       <div class="mt-1 inline-flex h-12 w-12 items-center overflow-clip rounded-full bg-gray-300">
         <img src="{{ auth()->user()->profile_picture_path }}" alt="Profile Picture">
       </div>
-      <div class="dropdown-menu absolute right-0 hidden pt-4 text-gray-700">
+      <div class="dropdown-menu absolute z-[100] right-0 hidden pt-4 text-gray-700">
         <div class="w-[300px] rounded-xl border bg-white px-8 py-6 drop-shadow-lg">
           <a href="/profile/me" class="cursor-pointer">
             <div class="mx-auto h-24 w-24 overflow-clip rounded-full bg-gray-300">

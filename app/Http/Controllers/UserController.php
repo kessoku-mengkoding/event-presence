@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\Timetable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

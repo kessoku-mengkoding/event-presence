@@ -15,10 +15,13 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->json('location')->nullable();
-            $table->double('radius_meter')->nullable();
-            $table->timestamp('start_date');
-            $table->timestamp('end_date')->nullable();
+            $table->text('address')->nullable();
+            $table->double('latitude');
+            $table->double('longitude');
+            $table->integer('radius_meter');
+            $table->integer('lateness_tolerance')->default(0);
+            $table->dateTimeTz('start');
+            $table->dateTimeTz('end');
             $table->uuid('group_id');
             $table->uuid('created_by');
             $table->timestamps();

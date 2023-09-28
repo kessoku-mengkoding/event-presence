@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('bio')->nullable();
             $table->string('location')->nullable();
-            $table->string('profile_picture_path')->nullable();
+            $table->string('profile_picture_path')->nullable()->default('https://i.ibb.co/Qfyh1sd/e97a135cd968b85108dafcfc4dabb6c4.jpg');
             $table->boolean('is_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

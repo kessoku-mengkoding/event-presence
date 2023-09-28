@@ -22,7 +22,7 @@
 
   @include('partials.navbar')
 
-  <div class="w-screen">
+  <div class="w-full">
     @if (session('message'))
       <div class="bg-black py-3 text-center text-sm text-white">
         {{ session('message') }}
