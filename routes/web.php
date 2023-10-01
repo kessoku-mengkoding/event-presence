@@ -54,6 +54,7 @@ Route::delete('/groups/{id}', [GroupController::class, 'destroy'])->middleware('
 Route::get('/groups/join', [GroupController::class, 'join_view'])->middleware('auth');
 Route::post('/groups/join', [GroupController::class, 'join'])->middleware('auth');
 Route::get('/groups/join/redirect', [GroupController::class, 'join_redirect'])->middleware('auth');
+Route::get('/groups/join/scan', [GroupController::class, 'scan'])->middleware('auth');
 Route::post('/groups/join/qr-image', [GroupController::class, 'join_by_upload_qr'])->middleware('auth');
 Route::delete('/groups/{group_id}/member/{member_id}', [GroupMemberController::class, 'destroy'])->middleware('auth');
 Route::put('/groups/{group_id}/member/{member_id}/role', [GroupMemberController::class, 'destroy'])->middleware('auth');

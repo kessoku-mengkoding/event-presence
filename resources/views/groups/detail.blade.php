@@ -4,7 +4,8 @@
   <h1> Group name: {{ $group->name }} </h1>
   <p>Group Id: {{ $group->id }}</p>
   <p>Group Description: {{ $group->description }}</p>
-  <p>Qr: {{$group->qr_code_path}}</p>
+  <p>Qr: {{ $group->qr_code_path }}</p>
+  <img src="{{ $group->qr_code_path }}" alt="">
   <p class="mt-4">Group Members:</p>
   <ul>
     @foreach ($group->groupmembers as $groupmember)

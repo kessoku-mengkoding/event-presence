@@ -126,7 +126,7 @@ class GroupController extends Controller
 
     public function join_redirect(Request $request)
     {
-        // xxx.com/groups/join/redirect?group_id=
+        // yyy.com/groups/join/redirect?group_id=
 
         $group = DB::select('SELECT id FROM groups WHERE id = ?', [$request->input("group_id")]);
         if(!$group) {
@@ -135,7 +135,10 @@ class GroupController extends Controller
 
         $already_join = DB::select('SELECT id FROM groupmembers WHERE user_id = ? && group_id = ?', [Auth::id(), $request->input("group_id")]);
         if($already_join) {
-            return back()->with('message', 'You alredy join this group before');
+            if(url()->previous() == "http://localhost:8000/groups/join/scan") {
+                return redirect("/groups/join")->with('message', 'You already join this group before');
+            }
+            return back()->with('message', 'You already join this group before');
         }
 
         $groupMember = new GroupMember();
@@ -162,7 +165,16 @@ class GroupController extends Controller
         $response = Http::get('http://localhost:5000/read?url=' . $url);
         $redirect_url = $response->body();
 
-        return redirect($redirect_url);
+        if (strpos($redirect_url, '/groups/join/redirect?group_id=') !== false) {
+            return redirect($redirect_url);
+        } else {
+            return back()->with("message", "Group not found");
+        }
+    }
+
+    public function scan()
+    {
+        return view("groups.scan");
     }
 
     public function destroy($id)
