@@ -4,6 +4,7 @@
   <h1> Group name: {{ $group->name }} </h1>
   <p>Group Id: {{ $group->id }}</p>
   <p>Group Description: {{ $group->description }}</p>
+  <p>Qr: {{$group->qr_code_path}}</p>
   <p class="mt-4">Group Members:</p>
   <ul>
     @foreach ($group->groupmembers as $groupmember)
@@ -81,4 +82,23 @@
 
   <a href="/timetables/{{ $group->id }}/new" class="btn">Create Timetable</a>
   <h1>Timetables</h1>
+  <ul>
+    @foreach ($timetables as $timetable)
+      <li class="flex gap-12 border border-black">
+        <p>{{ $timetable->title }}</p>
+        <p>{{ $timetable->start }}</p>
+        <p>{{ $timetable->end }}</p>
+        <p>{{ $timetable->lateness_tolerance }}</p>
+        <p>{{ $timetable->lat }}</p>
+        <p>{{ $timetable->long }}</p>
+        <p>{{ $timetable->radius_meter }}</p>
+        <p>{{ $timetable->address }}</p>
+        <form action="/timetables/{{ $timetable->id }}" method="POST">
+          @csrf
+          @method('DELETE')
+          <button class="btn">Delete</button>
+        </form>
+      </li>
+    @endforeach
+  </ul>
 @endsection

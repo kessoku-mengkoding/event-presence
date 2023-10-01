@@ -26,14 +26,6 @@ class ImageController extends Controller
         return $imageUrl;
     }
 
-    public function decode_qr_image($file_url)
-    {
-        // http://api.qrserver.com/v1/read-qr-code/?fileurl=http%3A%2F%2Fapi.qrserver.com%2Fv1%2Fcreate-qr-code%2F%3Fdata%3DHelloWorld
-        $response = Http::get('http://api.qrserver.com/v1/read-qr-code/?fileurl='. urlencode($file_url));
-
-        dd($file_url, $response);
-    }
-
     public function changeProfilePicture($id, Request $request)
     {
         $id = $id == 'me' ? Auth::id() : $id;

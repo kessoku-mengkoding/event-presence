@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('image_path')->nullable();
+            $table->string('qr_code_path')->nullable();
             $table->text('description')->nullable();
             $table->enum('type', ['invite only', 'anyone can join', 'closed'])->default('anyone can join');
             $table->timestamps();

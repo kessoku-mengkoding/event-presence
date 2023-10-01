@@ -55,7 +55,7 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
-    public function groupMembers(): HasMany
+    public function groupmembers(): HasMany
     {
         return $this->hasMany(GroupMember::class);
     }

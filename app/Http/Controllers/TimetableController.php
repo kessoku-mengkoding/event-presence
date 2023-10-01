@@ -31,7 +31,6 @@ class TimetableController extends Controller
             'start' => 'required|date',
             'end' => 'required|date|after:start',
             'group_id' => 'required',
-            'created_by' => 'required'
         ]);
 
         $timetable = new Timetable();
@@ -47,11 +46,17 @@ class TimetableController extends Controller
         $timetable->created_by = Auth::id();
         $timetable->save();
 
-        return redirect()->back()->with('message', 'Timetable created');
+        return redirect('/groups/'. $request->group_id .'/detail')->with('message', 'Timetable created');
     }
 
     public function getListInGroup($group_id)
     {
         return Timetable::where('group_id', $group_id)->get();
+    }
+
+    public function delete($id) {
+        Timetable::where('id', $id)->delete();
+
+        return back()->with('message', 'Timetable deleted');
     }
 }

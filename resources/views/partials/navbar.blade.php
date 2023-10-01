@@ -4,7 +4,7 @@
     <li class="hover:underline"><a href="/groups">Groups</a></li>
     <li class="hover:underline">Statistic</li>
   </ul>
-  <div class="flex items-center">Logo</div>
+  {{-- <div class="flex items-center">Logo</div> --}}
   <ul class="flex items-center gap-6">
     <li>
       <a href="/invitations" class="invitations-btn">

@@ -6,18 +6,45 @@ use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\Timetable;
 use App\Models\User;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index() {
-        $groups = GroupMember::with('group')->where('user_id', Auth::id())->get();
+    public function index(Request $request)
+    {
+        $type = $request->input('type');
+
         $user = User::where('id', Auth::id())->first();
+        $timetables = User::with(['groupmembers.group.timetables'])
+                    ->where('id', Auth::id())
+                    ->first();
+
+        $timezone = new DateTimeZone('Asia/Taipei'); // UTC+8
+        $now = new DateTime('now', $timezone);
+        $currentDateTime = $now->format('Y-m-d H:i:s');
+
+        if($type == 'ongoing') {
+            $temp = $timetables->groupmembers->map(function($groupmember) use ($currentDateTime) {
+                return $groupmember->group->timetables->filter(function($timetable) use ($currentDateTime) {
+                    return $timetable->start_time <= $currentDateTime && $timetable->end_time >= $currentDateTime;
+                });
+            });
+            $timetables = $temp->flatten();
+            dd($timetables);
+        }
+
+        if($type == 'upcoming') {
+
+        }
+
         return view('home', [
-            'groups' => $groups,
+            'type' => $type,
             'user' => $user,
-            'title' => 'Home'
+            'title' => 'Home',
+            'timetables' => $timetables
         ]);
     }
 
