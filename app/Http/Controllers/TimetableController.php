@@ -21,17 +21,17 @@ class TimetableController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string',
-            'lat' => 'required|numeric|gte:-90|lte:90',
-            'long' => 'required|numeric|gte:-1800|lte:180',
-            'address' => 'required|string',
-            'radius_meter' => 'required|numeric|gt:0',
-            'lateness_tolerance' => 'required|numeric|gte:0',
-            'start' => 'required|date',
-            'end' => 'required|date|after:start',
-            'group_id' => 'required',
-        ]);
+        // $request->validate([
+        //     'title' => 'required|string',
+        //     'lat' => 'required|numeric|gte:-90|lte:90',
+        //     'long' => 'required|numeric|gte:-1800|lte:180',
+        //     'address' => 'required|string',
+        //     'radius_meter' => 'required|numeric|gt:0',
+        //     'lateness_tolerance' => 'required|numeric|gte:0',
+        //     'start' => 'required|date',
+        //     'end' => 'required|date|after:start',
+        //     'group_id' => 'required',
+        // ]);
 
         $timetable = new Timetable();
         $timetable->title = $request->title;
@@ -44,6 +44,12 @@ class TimetableController extends Controller
         $timetable->end = $request->end;
         $timetable->group_id = $request->group_id;
         $timetable->created_by = Auth::id();
+        $timetable->save();
+
+        $redirect_url = env('APP_COMPLETE_URL') . "/presences/get-device-information?group_id=" . $request->group_id . "&timetable_id=" . $timetable->id;
+        $imageController = new ImageController();
+        $qr_code_path = $imageController->generateQrUrl($redirect_url);
+        $timetable->qr_code_path = $qr_code_path;
         $timetable->save();
 
         return redirect('/groups/'. $request->group_id .'/detail')->with('message', 'Timetable created');

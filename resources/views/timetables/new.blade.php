@@ -52,12 +52,13 @@
           @enderror
         </div>
       </div>
+      <label for="" class="font-semibold mt-6">Address</label>
+      <input type="text" name="address" disabled id="address" value="" class="cursor-not-allowed input mt-2">
       <label for="" class="font-semibold mt-6">Radius <span class="text-xs font-thin">(meter)</span></label>
       <input type="number" name="radius_meter" id="radius" value="100" class="input mt-2">
       @error('radius_meter')
         <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
       @enderror
-      <input hidden type="text" name="address" id="address">
       <button class="btn-primary mt-6">Create</button>
     </form>
 

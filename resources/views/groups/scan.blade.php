@@ -18,11 +18,12 @@
     function onScanSuccess(decodedText, decodedResult) {
       console.log(`Code matched = ${decodedText}`, decodedResult);
       html5QrcodeScanner.clear();
-      window.location.replace("http://localhost:8000" + decodedText);
+      window.location.replace({{ env('APP_COMPLETE_URL') }} + decodedText);
+      //   window.location.replace("http://localhost:8000" + decodedText);
     }
 
     function onScanFailure(error) {
-        console.warn(`Code scan error = ${error}`);
+      console.warn(`Code scan error = ${error}`);
     }
 
     let html5QrcodeScanner = new Html5QrcodeScanner(

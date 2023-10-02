@@ -15,8 +15,10 @@ return new class extends Migration
             $table->uuid('id');
             $table->uuid('groupmember_id');
             $table->uuid('timetable_id');
-            $table->string('status');
-            $table->boolean('is_valid');
+            $table->enum('status', ['on time', 'late']);
+            $table->boolean('is_valid'); // base on location
+            $table->double('latitude');
+            $table->double('longitude');
             $table->timestamps();
 
             $table->foreign('groupmember_id')->references('id')->on('groupmembers')->onDelete('cascade');

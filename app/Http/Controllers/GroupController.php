@@ -39,8 +39,8 @@ class GroupController extends Controller
         ]);
 
         // handle image
+        $image_controller = new ImageController();
         if($request->file('image')){
-            $image_controller = new ImageController();
             $image_link = $image_controller->upload_external($request);
         }
 
@@ -49,15 +49,13 @@ class GroupController extends Controller
         $group->name = $request->name;
         $group->image_path = $image_link ?? NULL;
         $group->description = $request->description;
-
         $group->save();
 
         // create qr team to join automatically
-        $redirect_join_url = "/groups/join/redirect?group_id=" . $group->id;
-        $response = Http::get("http://localhost:5000/write?string=" . $redirect_join_url);
-        $qr_code_path = $response->body();
-        $group->qr_code_path = $qr_code_path;
 
+        $redirect_join_url = "/groups/join/redirect?group_id=" . $group->id;
+        $qr_code_path = $image_controller->generateQrUrl($redirect_join_url);
+        $group->qr_code_path = $qr_code_path;
         $group->save();
 
         // add user to group as groupmember
@@ -135,7 +133,7 @@ class GroupController extends Controller
 
         $already_join = DB::select('SELECT id FROM groupmembers WHERE user_id = ? && group_id = ?', [Auth::id(), $request->input("group_id")]);
         if($already_join) {
-            if(url()->previous() == "http://localhost:8000/groups/join/scan") {
+            if(url()->previous() == env('APP_COMPLETE_URL') . "/groups/join/scan") {
                 return redirect("/groups/join")->with('message', 'You already join this group before');
             }
             return back()->with('message', 'You already join this group before');

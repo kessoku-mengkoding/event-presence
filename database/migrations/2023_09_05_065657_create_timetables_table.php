@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('lateness_tolerance')->default(0);
             $table->dateTimeTz('start');
             $table->dateTimeTz('end');
+            $table->string('qr_code_path')->nullable();
             $table->uuid('group_id');
             $table->uuid('created_by');
             $table->timestamps();

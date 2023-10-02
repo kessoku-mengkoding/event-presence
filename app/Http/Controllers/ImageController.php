@@ -26,6 +26,12 @@ class ImageController extends Controller
         return $imageUrl;
     }
 
+    public function generateQrUrl($string)
+    {
+        $response = Http::get(env('QR_SERVICE_URL'), "/write?string=" . $string);
+        return $response->body();
+    }
+
     public function changeProfilePicture($id, Request $request)
     {
         $id = $id == 'me' ? Auth::id() : $id;

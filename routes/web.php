@@ -6,6 +6,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\UserController;
@@ -69,3 +70,6 @@ Route::post('/groups/{id}/invite', [InvitationController::class, 'create'])->mid
 Route::get('/timetables/{group_id}/new', [TimetableController::class, 'viewCreate'])->middleware('auth');
 Route::post('/timetables', [TimetableController::class, 'create'])->middleware('auth');
 Route::delete('/timetables/{id}', [TimetableController::class, 'delete'])->middleware('auth');
+
+Route::get('/presences/get-device-information', [PresenceController::class, 'get_device_info'])->middleware('auth');
+Route::get('/presences/redirect', [PresenceController::class, 'presence_redirect'])->middleware('auth');

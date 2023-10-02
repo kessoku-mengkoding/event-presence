@@ -100,6 +100,8 @@
           <button class="btn">Delete</button>
         </form>
       </li>
+      <img src="{{ $timetable->qr_code_path }}" alt="">
+      {{ $timetable->qr_code_path }}
     @endforeach
   </ul>
 @endsection
