@@ -39,10 +39,6 @@
     @apply transition-all duration-300 ease-in-out;
 }
 
-.group-card:hover .group-card-shadow {
-    @apply flex;
-}
-
 .fa-solid.fa-bell {
     display: none;
 }
@@ -62,6 +58,17 @@
 }
 .invitations-btn:hover .fa-solid.fa-paper-plane {
     display: inline-block;
+}
+
+.group-card:hover .timer {
+    display: block;
+    opacity: 1;
+    /* transition */
+    transition: opacity 0.3s ease-in-out;
+    -moz-transition: opacity 0.3s ease-in-out;
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    
 }
 
 .text-gradient-mint-blue-dark {

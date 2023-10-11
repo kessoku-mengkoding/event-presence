@@ -21,14 +21,15 @@
         {{-- join by qr image --}}
         <form action="/groups/join/qr-image" method="POST" enctype="multipart/form-data" id="imageUploadForm"> @csrf
           <input type="file" name="image" accept="image/*" id="imageInput" class="hidden">
-          <button type="button" class="flex h-12 w-12 items-center justify-center rounded-full bg-black"
+          <button type="button" class="flex h-12 w-12 items-center justify-center rounded-full bg-black hover:opacity-70"
             id="chooseImageButton">
             <i class="fa-solid fa-folder-open" style="color: #ffffff;"></i>
           </button>
         </form>
 
         {{-- join by scan qr --}}
-        <a href="/groups/join/scan" class="flex h-12 w-12 items-center justify-center rounded-full bg-black">
+        <a href="/groups/join/scan"
+          class="flex h-12 w-12 items-center justify-center rounded-full bg-black hover:opacity-70">
           <i class="fa-solid fa-camera" style="color: #ffffff;"></i>
         </a>
 

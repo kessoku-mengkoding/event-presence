@@ -14,7 +14,7 @@ class GroupMemberController extends Controller
             ->where('user_id', $member_id)
             ->delete();
 
-        return redirect('/groups/'. $group_id .'/detail');
+        return redirect('/groups/' . $group_id . '/detail');
     }
 
     public function changeRole($group_id, $member_id, Request $request)
@@ -25,6 +25,6 @@ class GroupMemberController extends Controller
             ->where('user_id', $member_id)
             ->update(['role' => $request->role]);
 
-        return redirect('/groups/'. $group_id .'/detail');
+        return redirect('/groups/' . $group_id . '/detail');
     }
 }

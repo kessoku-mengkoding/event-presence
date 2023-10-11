@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use App\Models\GroupMember;
+use App\Models\Presence;
 use App\Models\Timetable;
 use App\Models\User;
 use DateTime;
@@ -19,55 +19,80 @@ class UserController extends Controller
 
         $user = User::where('id', Auth::id())->first();
         $timetables = User::with(['groupmembers.group.timetables'])
-                    ->where('id', Auth::id())
-                    ->first();
+            ->where('id', Auth::id())
+            ->first();
 
-        $timezone = new DateTimeZone('Asia/Taipei'); // UTC+8
+        $timezone = new DateTimeZone('Asia/Makassar'); // UTC+8
         $now = new DateTime('now', $timezone);
         $currentDateTime = $now->format('Y-m-d H:i:s');
 
-        if($type == 'ongoing') {
-            $temp = $timetables->groupmembers->map(function($groupmember) use ($currentDateTime) {
-                return $groupmember->group->timetables->filter(function($timetable) use ($currentDateTime) {
-                    return $timetable->start_time <= $currentDateTime && $timetable->end_time >= $currentDateTime;
-                });
-            });
-            $timetables = $temp->flatten();
-            dd($timetables);
+        $helper = new HelperController();
+
+        $group_ids = array();
+        foreach ($timetables->groupmembers as $member) {
+            foreach ($member->group->timetables as $timetable) {
+                $timetable->is_presence = Presence::where('groupmember_id', $member->id)
+                                        ->where('timetable_id', $timetable->id)
+                                        ->exists();
+
+                array_push($group_ids, $member->group->id);
+
+                if ($currentDateTime >= $timetable->start && $currentDateTime <= $timetable->end) {
+                    $time_dif = $helper->calculateDatetimeDifference($currentDateTime, $timetable->end);
+                    $timetable->status = 'ongoing';
+                    $timetable->time_description = $time_dif . ' left';
+                } else if ($currentDateTime < $timetable->start) {
+                    $time_dif = $helper->calculateDatetimeDifference($currentDateTime, $timetable->start);
+                    $timetable->status = 'upcoming';
+                    $timetable->time_description = $time_dif . ' to start';
+                } else {
+                    $time_dif = $helper->calculateDatetimeDifference($currentDateTime, $timetable->end);
+                    $timetable->status = 'missed';
+                    $timetable->time_description = $time_dif . ' ago';
+                }
+            }
         }
 
-        if($type == 'upcoming') {
-
-        }
+        $group_ids = array_unique($group_ids);
+        $recent_timetables = Timetable::with('group')
+                                        ->whereIn('group_id', $group_ids)
+                                        ->orderBy('created_at','desc')
+                                        ->get();
 
         return view('home', [
             'type' => $type,
             'user' => $user,
             'title' => 'Home',
-            'timetables' => $timetables
+            'timetables' => $timetables,
+            'time' => $currentDateTime,
+            'recent_timetables' => $recent_timetables
         ]);
     }
 
-    public function reminder() {
+    public function reminder()
+    {
         return view('home.reminder', [
             'title' => 'Reminder'
         ]);
     }
 
-    public function ongoing() {
+    public function ongoing()
+    {
         return view('home.ongoing', [
             'title' => 'Ongoing'
         ]);
     }
 
-    public function upcoming() {
+    public function upcoming()
+    {
         return view('home.upcoming', [
             'title' => 'Upcoming'
         ]);
     }
 
-    public function profile_view(string $id) {
-        if($id == 'me') {
+    public function profile_view(string $id)
+    {
+        if ($id == 'me') {
             $id = Auth::id();
         }
         $user = User::find($id);
@@ -78,8 +103,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit_view($id) {
-        if($id == 'me') {
+    public function edit_view($id)
+    {
+        if ($id == 'me') {
             $id = Auth::id();
         }
         $user = User::find($id);
@@ -89,8 +115,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function password_view($id) {
-        if($id == 'me') {
+    public function password_view($id)
+    {
+        if ($id == 'me') {
             $id = Auth::id();
         }
         $user = User::find($id);
@@ -100,7 +127,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $id = Auth::id();
         $user = User::find($id);
         $user->update($request->all());
@@ -108,7 +136,8 @@ class UserController extends Controller
         return back()->with('message', 'Update profile success');
     }
 
-    public function destroy() {
+    public function destroy()
+    {
         $id = Auth::id();
         User::destroy($id);
 

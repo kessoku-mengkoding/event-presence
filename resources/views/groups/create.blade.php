@@ -6,7 +6,7 @@
 
     <form action="/groups" method="POST" class="mt-6" enctype="multipart/form-data"> @csrf @method('POST')
       <div class="flex flex-col items-center gap-4">
-        <div class="h-24 w-24 overflow-clip rounded-full">
+        <div class="h-24 w-24 overflow-clip rounded-full bg-black">
           <img alt="Group Image" id="uploadPreview">
         </div>
         <input type="file" name="image" accept="image/*" id="uploadImage" hidden onchange="previewImage();">

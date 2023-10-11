@@ -21,4 +21,9 @@ class Presence extends Model
     {
         return $this->belongsTo(Timetable::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

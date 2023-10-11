@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Http;
 
 class GroupController extends Controller
 {
-    public function index()
+    public function index_view()
     {
-        $groupmembers = GroupMember::with('group')->where('user_id', Auth::id())->get();
+        $groupmembers = GroupMember::with(['group', 'group.groupmembers'])->where('user_id', Auth::id())->get();
 
         return view('groups.index', [
             'title' => 'Groups',
@@ -24,7 +24,7 @@ class GroupController extends Controller
         ]);
     }
 
-    public function indexCreate()
+    public function create_view()
     {
         return view('groups.create', [
             'title' => 'Create Group'
@@ -39,22 +39,22 @@ class GroupController extends Controller
         ]);
 
         // handle image
-        $image_controller = new ImageController();
-        if($request->file('image')){
-            $image_link = $image_controller->upload_external($request);
+        $image_link = NULL;
+        if ($request->file('image')) {
+            $image_link = ImageController::upload_external($request);
         }
 
         // create group
         $group = new Group();
         $group->name = $request->name;
-        $group->image_path = $image_link ?? NULL;
+        $group->image_path = $image_link;
         $group->description = $request->description;
         $group->save();
 
         // create qr team to join automatically
 
         $redirect_join_url = "/groups/join/redirect?group_id=" . $group->id;
-        $qr_code_path = $image_controller->generateQrUrl($redirect_join_url);
+        $qr_code_path = ImageController::generateQrUrl($redirect_join_url);
         $group->qr_code_path = $qr_code_path;
         $group->save();
 
@@ -75,16 +75,16 @@ class GroupController extends Controller
     {
         $group = Group::with('groupmembers')->find($id);
         $user_in_group = DB::table('groupmembers')
-                ->where('group_id', $id)
-                ->where('user_id', Auth::id())
-                ->first();
+            ->where('group_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
 
         $pendings = Invitation::with(['user'])
-                        ->where('group_id', $id)
-                        ->get();
+            ->where('group_id', $id)
+            ->get();
 
         $timetable = new TimetableController();
-        $timetables = $timetable->getListInGroup($id);
+        $timetables = $timetable->filter_by_group($id);
 
         return view('groups.detail', [
             'title' => 'Group Detail',
@@ -96,7 +96,8 @@ class GroupController extends Controller
         ]);
     }
 
-    public function join_view(Request $request) {
+    public function join_view(Request $request)
+    {
         return view('groups.join', [
             'title' => 'Join Group'
         ]);
@@ -105,12 +106,12 @@ class GroupController extends Controller
     public function join(Request $request)
     {
         $group = DB::select('SELECT id FROM groups WHERE id = ?', [$request->id]);
-        if(!$group) {
+        if (!$group) {
             return back()->with('message', 'Group not found');
         }
 
         $already_join = DB::select('SELECT id FROM groupmembers WHERE user_id = ? && group_id = ?', [Auth::id(), $request->id]);
-        if($already_join) {
+        if ($already_join) {
             return back()->with('message', 'You alredy join this group before');
         }
 
@@ -119,7 +120,7 @@ class GroupController extends Controller
         $groupMember->group_id = $request->id;
         $groupMember->save();
 
-        return redirect('/groups/'. $request->id .'/detail')->with("message", "Success join group");
+        return redirect('/groups/' . $request->id . '/detail')->with("message", "Success join group");
     }
 
     public function join_redirect(Request $request)
@@ -127,13 +128,13 @@ class GroupController extends Controller
         // yyy.com/groups/join/redirect?group_id=
 
         $group = DB::select('SELECT id FROM groups WHERE id = ?', [$request->input("group_id")]);
-        if(!$group) {
+        if (!$group) {
             return back()->with('message', 'Group not found');
         }
 
         $already_join = DB::select('SELECT id FROM groupmembers WHERE user_id = ? && group_id = ?', [Auth::id(), $request->input("group_id")]);
-        if($already_join) {
-            if(url()->previous() == env('APP_COMPLETE_URL') . "/groups/join/scan") {
+        if ($already_join) {
+            if (url()->previous() == env('APP_COMPLETE_URL') . "/groups/join/scan") {
                 return redirect("/groups/join")->with('message', 'You already join this group before');
             }
             return back()->with('message', 'You already join this group before');
@@ -144,7 +145,7 @@ class GroupController extends Controller
         $groupMember->group_id = $request->input("group_id");
         $groupMember->save();
 
-        return redirect('/groups/'. $request->input("group_id") .'/detail')->with("message", "Success join group");
+        return redirect('/groups/' . $request->input("group_id") . '/detail')->with("message", "Success join group");
     }
 
     public function join_by_upload_qr(Request $request)
@@ -157,10 +158,11 @@ class GroupController extends Controller
             return back()->with('message', 'Something went wrong');
         }
 
-        $image_controller = new ImageController();
-        $url = $image_controller->upload_external($request);
+        $url = ImageController::upload_external($request);
 
-        $response = Http::get('http://localhost:5000/read?url=' . $url);
+        $response = Http::post(env('QR_SERVICE_URL') . '/read', [
+            'url' => $url
+        ]);
         $redirect_url = $response->body();
 
         if (strpos($redirect_url, '/groups/join/redirect?group_id=') !== false) {

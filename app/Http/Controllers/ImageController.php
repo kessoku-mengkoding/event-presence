@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
-    public function upload_external(Request $request)
+    public static function upload_external(Request $request)
     {
         $apiKey = env('IMGBB_API_KEY');
 
@@ -26,9 +26,11 @@ class ImageController extends Controller
         return $imageUrl;
     }
 
-    public function generateQrUrl($string)
+    public static function generateQrUrl($string)
     {
-        $response = Http::get(env('QR_SERVICE_URL'), "/write?string=" . $string);
+        $response = Http::post(env('QR_SERVICE_URL') . "/write", [
+            'string' => $string
+        ]);
         return $response->body();
     }
 
@@ -37,7 +39,7 @@ class ImageController extends Controller
         $id = $id == 'me' ? Auth::id() : $id;
 
         try {
-            $imageUrl = $this->upload_external($request);
+            $imageUrl = $this::upload_external($request);
 
             if ($imageUrl) {
                 DB::table('users')
@@ -53,7 +55,8 @@ class ImageController extends Controller
         }
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $id = $id == 'me' ? Auth::id() : $id;
 
         DB::table('users')

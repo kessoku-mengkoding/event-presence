@@ -1,6 +1,15 @@
 @extends('layouts.main')
 
 @section('content')
+  {{-- @if ($errors->any())
+    <div class="alert alert-danger">
+      <ul>
+        @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif --}}
   <div class="relative mx-auto my-12 max-w-2xl">
     <h1 class="my-6 text-2xl font-bold"><span class="text-gradient-purple-coral">{{ $group->name }}</span> <span
         class="text-gray-300">/</span> New Timetable</h1>
@@ -9,28 +18,29 @@
       @method('POST')
       <input hidden type="text" name="group_id" value="{{ $group_id }}" class="input">
       <label for="" class="font-semibold">Title</label>
-      <input type="text" name="title" id="" class="input mt-2">
+      <input type="text" name="title" id="" value="{{ old('title') }}" class="input mt-2">
       @error('title')
         <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
       @enderror
       <div class="mt-6 flex w-full gap-6">
         <div class="flex w-full flex-col">
           <label for="startDatetime" class="font-semibold">Start</label>
-          <input type="datetime-local" name="start" id="startDatetime" class="input mt-2">
+          <input type="datetime-local" name="start" id="startDatetime" value="{{ old('start') }}" class="input mt-2">
           @error('start')
             <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
           @enderror
         </div>
         <div class="flex w-full flex-col">
           <label for="endDatetime" class="font-semibold">End</label>
-          <input type="datetime-local" name="end" id="endDatetime" class="input mt-2">
+          <input type="datetime-local" name="end" id="endDatetime" value="{{ old('end') }}" class="input mt-2">
           @error('end')
             <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
           @enderror
         </div>
       </div>
       <label for="" class="mt-6 font-semibold">Lateness tolerance <span class="text-xs font-thin">(minute)</label>
-      <input type="number" name="lateness_tolerance" value="0" id="" class="input mt-2">
+      <input type="number" name="lateness_tolerance" value="{{ old('lateness_tolerance') ?? 0 }}" id=""
+        class="input mt-2">
       @error('lateness_tolerance')
         <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
       @enderror
@@ -39,23 +49,25 @@
       <div class="mt-6 flex w-full gap-6">
         <div class="flex w-full flex-col">
           <label for="" class="font-semibold">Latitude</label>
-          <input type="text" name="lat" id="lat" class="input mt-2">
+          <input type="text" name="lat" id="lat" value="{{ old('lat') }}" class="input mt-2">
           @error('lat')
             <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
           @enderror
         </div>
         <div class="flex w-full flex-col">
           <label for="" class="font-semibold">Longitude</label>
-          <input type="text" name="long" id="long" class="input mt-2">
+          <input type="text" name="long" id="long" value="{{ old('long') }}" class="input mt-2">
           @error('long')
             <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
           @enderror
         </div>
       </div>
-      <label for="" class="font-semibold mt-6">Address</label>
-      <input type="text" name="address" disabled id="address" value="" class="cursor-not-allowed input mt-2">
-      <label for="" class="font-semibold mt-6">Radius <span class="text-xs font-thin">(meter)</span></label>
-      <input type="number" name="radius_meter" id="radius" value="100" class="input mt-2">
+      <label for="" class="mt-6 font-semibold">Address</label>
+      <input type="text" name="" disabled class="address input mt-2 cursor-not-allowed">
+      <input type="text" name="address" hidden class="address input mt-2 cursor-not-allowed">
+      <label for="" class="mt-6 font-semibold">Radius <span class="text-xs font-thin">(meter)</span></label>
+      <input type="number" name="radius_meter" id="radius" value="{{ old('radius_meter') ?? 100 }}" value="100"
+        class="input mt-2">
       @error('radius_meter')
         <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
       @enderror
@@ -69,6 +81,25 @@
   </div>
 
   <script>
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        localStorage.setItem('latitude', latitude);
+        localStorage.setItem('longitude', longitude);
+      }, function(error) {
+        console.error("Error getting location:", error);
+      }, options);
+    } else {
+      alert("Geolocation is not available in your browser.");
+    }
+
     function getCurrentDateTime() {
       const now = new Date();
       const year = now.getFullYear();
@@ -185,7 +216,10 @@
       const data = await response.json();
       const address = data?.results[0]?.formatted;
       marker.bindPopup(`<b>Central Point</b><br>${address}`).openPopup();
-      document.getElementById('address').value = address;
+      const addresses = document.querySelectorAll('.address')
+      addresses.forEach(a => {
+        a.value = address;
+      });
     }
   </script>
 @endsection

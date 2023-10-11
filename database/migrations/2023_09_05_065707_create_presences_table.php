@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('presences', function (Blueprint $table) {
             $table->uuid('id');
+            $table->uuid('user_id');
             $table->uuid('groupmember_id');
             $table->uuid('timetable_id');
             $table->enum('status', ['on time', 'late']);
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->double('longitude');
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('groupmember_id')->references('id')->on('groupmembers')->onDelete('cascade');
             $table->foreign('timetable_id')->references('id')->on('timetables')->onDelete('cascade');
         });

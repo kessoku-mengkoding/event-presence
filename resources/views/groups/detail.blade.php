@@ -94,6 +94,7 @@
         <p>{{ $timetable->long }}</p>
         <p>{{ $timetable->radius_meter }}</p>
         <p>{{ $timetable->address }}</p>
+        <a href="/timetables/{{$timetable->id}}/presences" class="btn">Detail</a>
         <form action="/timetables/{{ $timetable->id }}" method="POST">
           @csrf
           @method('DELETE')

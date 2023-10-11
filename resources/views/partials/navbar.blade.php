@@ -7,20 +7,25 @@
   {{-- <div class="flex items-center">Logo</div> --}}
   <ul class="flex items-center gap-6">
     <li>
+      <a href="/presences/history">
+        <i class="fa-solid fa-clock-rotate-left fa-lg"></i>
+      </a>
+    </li>
+    <li>
       <a href="/invitations" class="invitations-btn">
-        <i class="fa-solid fa-paper-plane fa-xl"></i>
-        <i class="fa-regular fa-paper-plane fa-xl"></i>
+        <i class="fa-solid fa-paper-plane fa-lg"></i>
+        <i class="fa-regular fa-paper-plane fa-lg"></i>
       </a>
     </li>
     <li>
       <a href="/notifications" class="notification-btn">
-        <i class="fa-solid fa-bell fa-xl"></i>
-        <i class="fa-regular fa-bell fa-xl"></i>
+        <i class="fa-solid fa-bell fa-lg"></i>
+        <i class="fa-regular fa-bell fa-lg"></i>
       </a>
     </li>
 
     <div class="dropdown relative inline-block">
-      <div class="mt-1 inline-flex h-12 w-12 items-center overflow-clip rounded-full bg-gray-300">
+      <div class="mt-1 inline-flex h-8 w-8 items-center overflow-clip rounded-full bg-gray-300">
         <img src="{{ auth()->user()->profile_picture_path }}" alt="Profile Picture">
       </div>
       <div class="dropdown-menu absolute z-[100] right-0 hidden pt-4 text-gray-700">

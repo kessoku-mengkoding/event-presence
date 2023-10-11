@@ -25,13 +25,13 @@ class RegisterController extends Controller
             'confirm_password' => 'required',
         ]);
 
-        if($validatedData['password'] != $validatedData['confirm_password']) {
+        if ($validatedData['password'] != $validatedData['confirm_password']) {
             return redirect()->back()->withInput()->withErrors(['confirm_password' => 'Confirm password does not match']);
         }
 
         $validatedData['password'] = Hash::make($validatedData['password']);
         User::create($validatedData);
 
-        return redirect('/sign-in')->with('message','Register success');
+        return redirect('/sign-in')->with('message', 'Register success');
     }
 }

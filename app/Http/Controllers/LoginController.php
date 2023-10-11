@@ -21,11 +21,11 @@ class LoginController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-           'email' => 'email:dns|required',
-           'password' => 'required'
+            'email' => 'email:dns|required',
+            'password' => 'required'
         ]);
 
-        if(Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
@@ -50,7 +50,7 @@ class LoginController extends Controller
             'new_password' => 'required',
         ]);
 
-        if(!Hash::check($request->old_password, auth()->user()->password)){
+        if (!Hash::check($request->old_password, auth()->user()->password)) {
             return back()->with("message", "Old password doesn't match!");
         }
 

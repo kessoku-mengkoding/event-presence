@@ -14,8 +14,8 @@ class InvitationController extends Controller
     public function index()
     {
         $invitations = Invitation::with(['group', 'groupmember.user'])
-                        ->where('user_id', Auth::id())
-                        ->get();
+            ->where('user_id', Auth::id())
+            ->get();
 
         return view('invitation', [
             'title' => 'Invitations',
@@ -30,31 +30,31 @@ class InvitationController extends Controller
 
         // check is user exist
         $user = User::where($is_email ? 'email' : 'username', $request->key)->first();
-        if(!$user) {
+        if (!$user) {
             return back()->with('message', 'User not found');
         }
 
         // can't invite user that already join
         $already_join = GroupMember::where('user_id', $user->id)
-                                    ->where('group_id', $group_id)
-                                    ->first();
-        if($already_join) {
+            ->where('group_id', $group_id)
+            ->first();
+        if ($already_join) {
             return back()->with('message', 'User alredy in this group');
         }
 
         // can't invite user that already invited
         $invitedUser = DB::table('invitations')
-                        ->where('group_id', $group_id)
-                        ->where('user_id', $request->user_id)
-                        ->first();
-        if($invitedUser) {
+            ->where('group_id', $group_id)
+            ->where('user_id', $request->user_id)
+            ->first();
+        if ($invitedUser) {
             return back()->with('message', 'User already invited to this group');
         }
 
         // get invitor groupmem id
         $invitor_groupmember = GroupMember::where('group_id', $group_id)
-                                    ->where('user_id', Auth::id())
-                                    ->first();
+            ->where('user_id', Auth::id())
+            ->first();
 
         $invitation = new Invitation();
         $invitation->user_id = $user->id;
@@ -65,7 +65,8 @@ class InvitationController extends Controller
         return redirect()->back()->with('success', 'Invite success');
     }
 
-    public function accept($id, Request $request) {
+    public function accept($id, Request $request)
+    {
         //create groupmember
         $groupMember = new GroupMember();
         $groupMember->user_id = Auth::id();
@@ -78,7 +79,8 @@ class InvitationController extends Controller
         return redirect()->back()->with('success', 'Invitation accepted');
     }
 
-    public function decline($id) {
+    public function decline($id)
+    {
         DB::delete('DELETE FROM invitations WHERE id = ?', [$id]);
 
         return redirect()->back()->with('success', 'Invitation declined');

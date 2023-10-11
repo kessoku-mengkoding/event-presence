@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
-  <title>Document</title>
+  <title>Presenced | Join Group</title>
 </head>
 
 <body>

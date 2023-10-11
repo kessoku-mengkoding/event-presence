@@ -47,8 +47,8 @@ Route::delete('/account', [UserController::class, 'destroy'])->middleware('auth'
 Route::post('/users/{id}/profile-picture', [ImageController::class, 'changeProfilePicture'])->middleware('auth');
 Route::delete('/users/{id}/profile-picture', [ImageController::class, 'delete'])->middleware('auth');
 
-Route::get('/groups', [GroupController::class, 'index'])->middleware('auth');
-Route::get('/groups/create', [GroupController::class, 'indexCreate'])->middleware('auth');
+Route::get('/groups', [GroupController::class, 'index_view'])->middleware('auth');
+Route::get('/groups/create', [GroupController::class, 'create_view'])->middleware('auth');
 Route::post('/groups', [GroupController::class, 'create'])->middleware('auth');
 Route::get('/groups/{id}/detail', [GroupController::class, 'detail'])->middleware('auth');
 Route::delete('/groups/{id}', [GroupController::class, 'destroy'])->middleware('auth');
@@ -67,9 +67,12 @@ Route::put('/invitations/{id}/decline', [InvitationController::class, 'decline']
 
 Route::post('/groups/{id}/invite', [InvitationController::class, 'create'])->middleware('auth');
 
-Route::get('/timetables/{group_id}/new', [TimetableController::class, 'viewCreate'])->middleware('auth');
+Route::get('/timetables/{group_id}/new', [TimetableController::class, 'create_view'])->middleware('auth');
 Route::post('/timetables', [TimetableController::class, 'create'])->middleware('auth');
 Route::delete('/timetables/{id}', [TimetableController::class, 'delete'])->middleware('auth');
+Route::get('/timetables/{id}/scan-me', [TimetableController::class, 'scan_me_view'])->middleware('auth');
+Route::get('/timetables/{id}/presences', [PresenceController::class, 'index_view'])->middleware('auth');
 
 Route::get('/presences/get-device-information', [PresenceController::class, 'get_device_info'])->middleware('auth');
 Route::get('/presences/redirect', [PresenceController::class, 'presence_redirect'])->middleware('auth');
+Route::get('/presences/history', [PresenceController::class, 'history_view'])->middleware('auth');

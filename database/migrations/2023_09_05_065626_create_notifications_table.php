@@ -16,9 +16,12 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->string('title');
             $table->text('message');
-            $table->string('accept_link')->nullable();
-            $table->string('reject_link')->nullable();
-            $table->enum('type', ['message', 'invite']);
+            $table->enum('type', [
+                'presence', // when someone presenced
+                'timetable', // when there is a new timetable
+                'groupmember' // when there is a new member
+            ])->nullable();
+            $table->json('key');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

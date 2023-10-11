@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Illuminate\Http\Request;
 
 class HelperController extends Controller
 {
-    function is_valid_email($email) {
+    public function is_valid_email($email)
+    {
         $pattern = '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/';
         return preg_match($pattern, $email);
+    }
+
+    public function calculateDatetimeDifference($datetime1, $datetime2)
+    {
+        $datetime1 = new DateTime($datetime1);
+        $datetime2 = new DateTime($datetime2);
+        $interval = $datetime1->diff($datetime2);
+
+        return $interval->d . ' days ' . $interval->h . ' hours ' . $interval->i . ' minutes ' . $interval->s . ' seconds';
     }
 }
