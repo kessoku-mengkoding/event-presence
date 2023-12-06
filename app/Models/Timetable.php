@@ -20,11 +20,11 @@ class Timetable extends Model
 
     public function createdby(): BelongsTo
     {
-        return $this->belongsTo(GroupMember::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function group(): BelongsTo
+    public function event(): BelongsTo
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Event::class);
     }
 }

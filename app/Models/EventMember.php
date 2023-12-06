@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class GroupMember extends Model
+class EventMember extends Model
 {
     use HasFactory;
     use HasUuids;
 
-    protected $table = 'groupmembers';
+    protected $table = 'eventmembers';
 
     protected $fillable = [
         'user_id',
-        'group_id',
+        'event_id',
         'role',
     ];
 
@@ -31,9 +31,9 @@ class GroupMember extends Model
         return $this->hasMany(Presence::class);
     }
 
-    public function group(): BelongsTo
+    public function event(): BelongsTo
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Event::class);
     }
 
     public function invitations(): HasMany

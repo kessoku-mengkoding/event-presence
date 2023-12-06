@@ -12,9 +12,9 @@ class Presence extends Model
     use HasFactory;
     use HasUuids;
 
-    public function groupmember(): BelongsTo
+    public function eventmember(): BelongsTo
     {
-        return $this->belongsTo(GroupMember::class);
+        return $this->belongsTo(EventMember::class);
     }
 
     public function timetable(): BelongsTo

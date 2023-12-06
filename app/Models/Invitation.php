@@ -15,13 +15,13 @@ class Invitation extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function group(): BelongsTo
+    public function event(): BelongsTo
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Event::class);
     }
 
-    public function groupmember(): BelongsTo
+    public function eventmember(): BelongsTo
     {
-        return $this->belongsTo(GroupMember::class, 'invited_by_groupmember_id');
+        return $this->belongsTo(EventMember::class, 'invited_by_user_id');
     }
 }

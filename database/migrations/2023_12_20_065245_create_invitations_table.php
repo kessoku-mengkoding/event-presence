@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id');
-            $table->uuid('group_id');
-            $table->uuid('invited_by_groupmember_id')->nullable();
+            $table->uuid('event_id');
+            $table->uuid('invited_by_user_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('invited_by_groupmember_id')->references('id')->on('groupmembers')->onDelete('set null');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
+            $table->foreign('invited_by_user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

@@ -55,14 +55,9 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
-    public function groupmembers(): HasMany
+    public function eventmembers(): HasMany
     {
-        return $this->hasMany(GroupMember::class);
-    }
-
-    public function personalization(): HasOne
-    {
-        return $this->hasOne(Personalization::class);
+        return $this->hasMany(EventMember::class);
     }
 
     public function invitations(): HasMany
