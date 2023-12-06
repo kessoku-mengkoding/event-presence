@@ -20,9 +20,18 @@ class UserSeeder extends Seeder
             [
                 'id' => Str::uuid(),
                 'username' => Str::random(10),
+                'email' => 'admin@admin.com',
+                'password' => Hash::make('testtest'),
+                'is_verified' => true,
+                'is_admin' => true,
+            ],
+            [
+                'id' => Str::uuid(),
+                'username' => Str::random(10),
                 'email' => 'test@test.com',
                 'password' => Hash::make('testtest'),
                 'is_verified' => true,
+                'is_admin' => false,
             ],
             [
                 'id' => Str::uuid(),
@@ -30,6 +39,7 @@ class UserSeeder extends Seeder
                 'email' => 'test2@test.com',
                 'password' => Hash::make('testtest'),
                 'is_verified' => true,
+                'is_admin' => false,
             ]
         ]);
     }
