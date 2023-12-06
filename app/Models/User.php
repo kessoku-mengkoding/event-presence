@@ -74,4 +74,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Presence::class);
     }
+
+    public function residents(): HasOne
+    {
+        return $this->hasOne(Resident::class);
+    }
 }
