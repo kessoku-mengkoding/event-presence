@@ -33,14 +33,6 @@ class UserSeeder extends Seeder
                 'is_verified' => true,
                 'is_admin' => false,
             ],
-            [
-                'id' => Str::uuid(),
-                'username' => Str::random(10),
-                'email' => 'test2@test.com',
-                'password' => Hash::make('testtest'),
-                'is_verified' => true,
-                'is_admin' => false,
-            ]
         ]);
     }
 }
