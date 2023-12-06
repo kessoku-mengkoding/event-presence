@@ -57,16 +57,16 @@
   </style>
 </head>
 
-<body class="flex justify-center items-center h-screen">
-  <div class="lds-facebook ">
+<body class="flex h-screen items-center justify-center">
+  <div class="lds-facebook">
     <div></div>
     <div></div>
     <div></div>
   </div>
 
   <form action="/presences/redirect" style="display:none;">
-    <label for="group_id">group_id</label>
-    <input type="text" name="group_id" value="{{ $group_id }}">
+    <label for="event_id">event_id</label>
+    <input type="text" name="event_id" value="{{ $event_id }}">
     <label for="timetable_id">timetable_id</label>
     <input type="text" name="timetable_id" value="{{ $timetable_id }}">
     <label for="address">Address</label>

@@ -1,28 +1,28 @@
 @extends('layouts.main')
 
 @section('content')
-  <h1> Group name: {{ $group->name }} </h1>
-  <p>Group Id: {{ $group->id }}</p>
-  <p>Group Description: {{ $group->description }}</p>
-  <p>Qr: {{ $group->qr_code_path }}</p>
-  <img src="{{ $group->qr_code_path }}" alt="">
-  <p class="mt-4">Group Members:</p>
+  <h1> Event name: {{ $event->name }} </h1>
+  <p>Event Id: {{ $event->id }}</p>
+  <p>Event Description: {{ $event->description }}</p>
+  <p>Qr: {{ $event->qr_code_path }}</p>
+  <img src="{{ $event->qr_code_path }}" alt="">
+  <p class="mt-4">Event Members:</p>
   <ul>
-    @foreach ($group->groupmembers as $groupmember)
+    @foreach ($event->eventmembers as $eventmember)
       <li class="flex gap-12 border border-black">
-        <p>{{ $groupmember->user->username }}</p>
-        <p>{{ $groupmember->user->name }}</p>
-        <p>{{ $groupmember->user->email }}</p>
-        <p>{{ $groupmember->role }}</p>
-        @if (in_array($user_in_group->role, ['owner', 'admin']) && $groupmember->user_id != auth()->user()->id)
-          <form action="/groups/{{ $group->id }}/member/{{ $groupmember->user->id }}" method="POST">
+        <p>{{ $eventmember->user->username }}</p>
+        <p>{{ $eventmember->user->name }}</p>
+        <p>{{ $eventmember->user->email }}</p>
+        <p>{{ $eventmember->role }}</p>
+        @if (in_array($user_in_event->role, ['owner', 'admin']) && $eventmember->user_id != auth()->user()->id)
+          <form action="/events/{{ $event->id }}/member/{{ $eventmember->user->id }}" method="POST">
             @csrf
             @method('DELETE')
             <button class="btn">Delete</button>
           </form>
         @endif
-        @if ($groupmember->user_id != auth()->user()->id && auth()->user()->role == 'admin')
-          <form action="/groups/{{ $group->id }}/members/{{ $groupmember->id }}" method="POST">
+        @if ($eventmember->user_id != auth()->user()->id && auth()->user()->role == 'admin')
+          <form action="/events/{{ $event->id }}/members/{{ $eventmember->id }}" method="POST">
             @csrf
             @method('DELETE')
             <button class="btn">Delete</button>
@@ -39,7 +39,7 @@
   <h1>Invite member</h1>
   <div class="flex">
     <p>invite by email or username</p>
-    <form action="/groups/{{ $group->id }}/invite" method="POST">
+    <form action="/events/{{ $event->id }}/invite" method="POST">
       @csrf
       @method('POST')
       <input type="text" name="key" id="" class="input">
@@ -69,11 +69,11 @@
   <br>
   <br>
 
-  @if ($user_in_group->role == 'owner')
-    <form action="/groups/{{ $group->id }}" method="POST">
+  @if ($user_in_event->role == 'owner')
+    <form action="/events/{{ $event->id }}" method="POST">
       @csrf
       @method('DELETE')
-      <button class="btn">Delete Group</button>
+      <button class="btn">Delete Event</button>
     </form>
   @endif
 
@@ -81,7 +81,7 @@
   <br>
   <br>
 
-  <a href="/timetables/{{ $group->id }}/new" class="btn">Create Timetable</a>
+  <a href="/timetables/{{ $event->id }}/new" class="btn">Create Timetable</a>
   <h1>Timetables</h1>
   <ul>
     @foreach ($timetables as $timetable)
@@ -94,7 +94,7 @@
         <p>{{ $timetable->long }}</p>
         <p>{{ $timetable->radius_meter }}</p>
         <p>{{ $timetable->address }}</p>
-        <a href="/timetables/{{$timetable->id}}/presences" class="btn">Detail</a>
+        <a href="/timetables/{{ $timetable->id }}/presences" class="btn">Detail</a>
         <form action="/timetables/{{ $timetable->id }}" method="POST">
           @csrf
           @method('DELETE')

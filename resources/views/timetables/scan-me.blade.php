@@ -16,7 +16,7 @@ $currentDateTime = $now->format('Y-m-d H:i:s');
         <hr class="my-8 h-px w-full border-0 bg-slate-300">
         <span class="absolute left-1/2 -translate-x-1/2 bg-white px-3 text-sm text-black/50">or</span>
       </div>
-      <a href="/presences/get-device-information?group_id={{ $timetable->group->id }}&timetable_id={{ $timetable->id }}"
+      <a href="/presences/get-device-information?event_id={{ $timetable->event->id }}&timetable_id={{ $timetable->id }}"
         class="btn-primary-sm mx-auto w-max">Click Me</a>
     </div>
   @elseif($currentDateTime < $timetable->start)

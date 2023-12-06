@@ -4,13 +4,13 @@
   <div class="mt-12 flex items-center justify-center gap-12">
     <div class="relative flex max-w-md flex-col">
       <h1 class="text-gradient-mktg mb-6 text-3xl font-bold">Here we go!</h1>
-      <p class="text-sm">Please enter the group ID or simply scan the QR code shared by the group administrator.</p>
-      <form action="/groups/join" method="POST" class="mt-10"> @csrf @method('POST')
+      <p class="text-sm">Please enter the event ID or simply scan the QR code shared by the event administrator.</p>
+      <form action="/events/join" method="POST" class="mt-10"> @csrf @method('POST')
         <div class="flex flex-col">
-          <label for="id" class="font-semibold">Group ID</label>
+          <label for="id" class="font-semibold">Event ID</label>
           <input type="text" name="id" class="input mt-2">
         </div>
-        <button class="btn-primary-sm mt-6 text-sm">Join Group</button>
+        <button class="btn-primary-sm mt-6 text-sm">Join Event</button>
       </form>
       <div class="inline-flex w-full items-center justify-center">
         <hr class="my-8 h-px w-full border-0 bg-slate-300">
@@ -19,7 +19,7 @@
       <div class="flex justify-center gap-4">
 
         {{-- join by qr image --}}
-        <form action="/groups/join/qr-image" method="POST" enctype="multipart/form-data" id="imageUploadForm"> @csrf
+        <form action="/events/join/qr-image" method="POST" enctype="multipart/form-data" id="imageUploadForm"> @csrf
           <input type="file" name="image" accept="image/*" id="imageInput" class="hidden">
           <button type="button" class="flex h-12 w-12 items-center justify-center rounded-full bg-black hover:opacity-70"
             id="chooseImageButton">
@@ -28,7 +28,7 @@
         </form>
 
         {{-- join by scan qr --}}
-        <a href="/groups/join/scan"
+        <a href="/events/join/scan"
           class="flex h-12 w-12 items-center justify-center rounded-full bg-black hover:opacity-70">
           <i class="fa-solid fa-camera" style="color: #ffffff;"></i>
         </a>

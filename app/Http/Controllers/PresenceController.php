@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GroupMember;
+use App\Models\EventMember;
 use App\Models\Presence;
 use App\Models\Timetable;
 use App\Models\User;
@@ -25,7 +25,7 @@ class PresenceController extends Controller
     public function get_device_info(Request $request)
     {
         return view('presences.get-device-info', [
-            'group_id' => $request->input('group_id'),
+            'event_id' => $request->input('event_id'),
             'timetable_id' => $request->input('timetable_id'),
             'title' => 'Get Device Information'
         ]);
@@ -47,13 +47,13 @@ class PresenceController extends Controller
     }
 
     public function presence_redirect(Request $request)
-    // "/presences/get-device-information?group_id=&timetable_id="
+    // "/presences/get-device-information?event_id=&timetable_id="
     {
         date_default_timezone_set('Asia/Makassar');
         $datetime_now = date("Y-m-d H:i:s");
 
         $timetable = Timetable::where("id", $request->timetable_id)
-            ->where("group_id", $request->group_id)->first();
+            ->where("event_id", $request->event_id)->first();
 
         // !! validate presence. time, location, etc
         // validate location
@@ -69,11 +69,11 @@ class PresenceController extends Controller
         }
         $status = $timetable->end < $datetime_now ? 'late' : 'on time';
 
-        $groupmember = GroupMember::with('user')->where('group_id', $request->group_id)
+        $eventmember = EventMember::with('user')->where('event_id', $request->event_id)
             ->where('user_id', Auth::id())
             ->first();
 
-        $is_presence_before = Presence::where('groupmember_id', $groupmember->id)
+        $is_presence_before = Presence::where('eventmember_id', $eventmember->id)
             ->where('timetable_id', $request->timetable_id)
             ->first();
         if ($is_presence_before) {
@@ -81,8 +81,8 @@ class PresenceController extends Controller
         }
 
         $presence = new Presence();
-        $presence->user_id = $groupmember->user->id;
-        $presence->groupmember_id = $groupmember->id;
+        $presence->user_id = $eventmember->user->id;
+        $presence->eventmember_id = $eventmember->id;
         $presence->timetable_id = $timetable->id;
         $presence->status = $status; // check time
         $presence->is_valid = $is_valid; // check location
@@ -95,9 +95,9 @@ class PresenceController extends Controller
 
     public function history_view()
     {
-        $user_presences = User::with(['presences.timetable', 'presences.groupmember.group'])
-                                ->where('id', Auth::id())
-                                ->first();
+        $user_presences = User::with(['presences.timetable', 'presences.eventmember.event'])
+            ->where('id', Auth::id())
+            ->first();
 
         return view('presences.history', [
             'user' => $user_presences,

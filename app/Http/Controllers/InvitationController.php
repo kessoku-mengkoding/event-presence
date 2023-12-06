@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GroupMember;
+use App\Models\EventMember;
 use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class InvitationController extends Controller
 {
     public function index()
     {
-        $invitations = Invitation::with(['group', 'groupmember.user'])
+        $invitations = Invitation::with(['event', 'eventmember.user'])
             ->where('user_id', Auth::id())
             ->get();
 
@@ -23,7 +23,7 @@ class InvitationController extends Controller
         ]);
     }
 
-    public function create($group_id, Request $request)
+    public function create($event_id, Request $request)
     {
         $helper = new HelperController();
         $is_email = $helper->is_valid_email($request->key);
@@ -35,31 +35,31 @@ class InvitationController extends Controller
         }
 
         // can't invite user that already join
-        $already_join = GroupMember::where('user_id', $user->id)
-            ->where('group_id', $group_id)
+        $already_join = EventMember::where('user_id', $user->id)
+            ->where('event_id', $event_id)
             ->first();
         if ($already_join) {
-            return back()->with('message', 'User alredy in this group');
+            return back()->with('message', 'User alredy in this event');
         }
 
         // can't invite user that already invited
         $invitedUser = DB::table('invitations')
-            ->where('group_id', $group_id)
+            ->where('event_id', $event_id)
             ->where('user_id', $request->user_id)
             ->first();
         if ($invitedUser) {
-            return back()->with('message', 'User already invited to this group');
+            return back()->with('message', 'User already invited to this event');
         }
 
-        // get invitor groupmem id
-        $invitor_groupmember = GroupMember::where('group_id', $group_id)
+        // get invitor eventmem id
+        $invitor_eventmember = EventMember::where('event_id', $event_id)
             ->where('user_id', Auth::id())
             ->first();
 
         $invitation = new Invitation();
         $invitation->user_id = $user->id;
-        $invitation->group_id = $group_id;
-        $invitation->invited_by_groupmember_id = $invitor_groupmember->id;
+        $invitation->event_id = $event_id;
+        $invitation->invited_by_eventmember_id = $invitor_eventmember->id;
         $invitation->save();
 
         return redirect()->back()->with('success', 'Invite success');
@@ -67,11 +67,11 @@ class InvitationController extends Controller
 
     public function accept($id, Request $request)
     {
-        //create groupmember
-        $groupMember = new GroupMember();
-        $groupMember->user_id = Auth::id();
-        $groupMember->group_id = $request->group_id;
-        $groupMember->save();
+        //create eventmember
+        $eventMember = new EventMember();
+        $eventMember->user_id = Auth::id();
+        $eventMember->event_id = $request->event_id;
+        $eventMember->save();
 
         //delete invitation
         DB::delete('DELETE FROM invitations WHERE id = ?', [$id]);

@@ -9,11 +9,12 @@
     @if (sizeof($invitations))
       @foreach ($invitations as $inv)
         <div class="mt-6 flex items-center justify-between">
-          <p>You're invited to group <span class="font-bold text-gradient-mktg">{{ $inv->group->name }}</span> by
-            <span class="font-bold text-gradient-copilot">{{ $inv->groupmember->user->username }}</span></p>
+          <p>You're invited to event <span class="text-gradient-mktg font-bold">{{ $inv->event->name }}</span> by
+            <span class="text-gradient-copilot font-bold">{{ $inv->eventmember->user->username }}</span>
+          </p>
           <div class="flex gap-2">
             <form action="/invitations/{{ $inv->id }}/accept" method="POST"> @csrf @method('PUT')
-              <input type="hidden" name="group_id" value="{{ $inv->group_id }}">
+              <input type="hidden" name="event_id" value="{{ $inv->event_id }}">
               <button class="btn-sm-no-color bg-yellow-100 hover:opacity-70">Accept</button>
             </form>
             <form action="/invitations/{{ $inv->id }}/decline" method="POST"> @csrf @method('PUT')

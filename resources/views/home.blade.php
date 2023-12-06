@@ -22,7 +22,8 @@ function formatDateTime($inputDateTime)
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.getElementById(elementId).innerHTML = (status == 'upcoming' ? 'next ' : '') + days + "d " + hours + "h " +
+        document.getElementById(elementId).innerHTML = (status == 'upcoming' ? 'next ' : '') + days + "d " + hours +
+          "h " +
           minutes + "m " + seconds + "s " + (status == 'upcoming' ? '' : 'left')
 
         if (distance < 0) {
@@ -51,7 +52,7 @@ function formatDateTime($inputDateTime)
                 <a href="">
                   <h1 class="text-gradient-blue-green">{{ $timetable->title }}</h1>
                 </a>
-                <p class="text-xs font-thin">{{ $timetable->group->name }}</p>
+                <p class="text-xs font-thin">{{ $timetable->event->name }}</p>
               </div>
             </li>
           @endforeach
@@ -64,8 +65,8 @@ function formatDateTime($inputDateTime)
           <h1 class="text-gradient-copilot font-semibold"><i class="fa-solid fa-dove mr-2"></i> Done</h1>
         </div>
         <ul class="flex flex-col gap-2 rounded-lg border bg-white p-4 shadow-md">
-          @foreach ($timetables->groupmembers as $groupmembers)
-            @foreach ($groupmembers->group->timetables as $timetable)
+          @foreach ($timetables->eventmembers as $eventmembers)
+            @foreach ($eventmembers->event->timetables as $timetable)
               @if ($timetable->is_presence)
                 <li class="flex items-center gap-4">
                   <div>
@@ -75,7 +76,7 @@ function formatDateTime($inputDateTime)
                     <a href="">
                       <h1 class="text-gradient-blue-green">{{ $timetable->title }}</h1>
                     </a>
-                    <p class="text-xs font-thin">{{ $groupmembers->group->name }}</p>
+                    <p class="text-xs font-thin">{{ $eventmembers->event->name }}</p>
                   </div>
                 </li>
               @endif
@@ -98,15 +99,15 @@ function formatDateTime($inputDateTime)
       </div>
 
       <div class="mx-auto mt-12 flex max-w-2xl flex-col gap-6 text-center">
-        @foreach ($timetables->groupmembers as $groupmembers)
-          @foreach ($groupmembers->group->timetables as $timetable)
+        @foreach ($timetables->eventmembers as $eventmembers)
+          @foreach ($eventmembers->event->timetables as $timetable)
             @if (($type ? $timetable->status == $type : true) && !$timetable->is_presence)
-              <div class="group-card">
+              <div class="event-card">
                 <a href="/timetables/{{ $timetable->id }}/scan-me"
                   class="relative flex w-full items-center gap-6 overflow-clip rounded-lg border bg-white px-6 py-5 shadow-md">
                   <div class="flex h-16 w-16 overflow-clip rounded-full bg-black">
                     <img class="object-fill"
-                      src="{{ $groupmembers->group->image_path ? $groupmembers->group->image_path : 'https://images.unsplash.com/photo-1596367407372-96cb88503db6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80' }}"
+                      src="{{ $eventmembers->event->image_path ? $eventmembers->event->image_path : 'https://images.unsplash.com/photo-1596367407372-96cb88503db6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80' }}"
                       alt="">
                   </div>
                   <div class="text-left">
@@ -116,7 +117,7 @@ function formatDateTime($inputDateTime)
                       </span>
                     </h1>
                     <p class="font-thin">in <span
-                        class="text-gradient-mktg font-semibold">{{ $groupmembers->group->name }}</span></p>
+                        class="text-gradient-mktg font-semibold">{{ $eventmembers->event->name }}</span></p>
                   </div>
                   <div class="absolute right-3 top-3 rounded-[5px] bg-black px-2 py-1">
                     <p class="text-xs text-white">{{ $timetable->status }}</p>
@@ -133,7 +134,7 @@ function formatDateTime($inputDateTime)
                     <p class="text-gradient-premium-support pt-[12px] text-sm font-bold">
                       Closed {{ \Carbon\Carbon::parse($timetable->start)->diffForHumans() }}</p>
                   @endif --}}
-                  <div class="group-card">
+                  <div class="event-card">
                     <p class="text-gradient-premium-support pt-[12px] text-sm font-bold" id="timer-{{ $timetable->id }}">
                       <script>
                         startCountdown("{{ $timetable->status == 'upcoming' ? $timetable->start : $timetable->end }}",

@@ -5,26 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class GroupMemberController extends Controller
+class EventMemberController extends Controller
 {
-    public function destroy($group_id, $member_id)
+    public function destroy($event_id, $member_id)
     {
-        DB::table('groupmembers')
-            ->where('group_id', $group_id)
+        DB::table('eventmembers')
+            ->where('event_id', $event_id)
             ->where('user_id', $member_id)
             ->delete();
 
-        return redirect('/groups/' . $group_id . '/detail');
+        return redirect('/events/' . $event_id . '/detail');
     }
 
-    public function changeRole($group_id, $member_id, Request $request)
+    public function changeRole($event_id, $member_id, Request $request)
     {
         dd($request->all());
-        DB::table('groupmembers')
-            ->where('group_id', $group_id)
+        DB::table('eventmembers')
+            ->where('event_id', $event_id)
             ->where('user_id', $member_id)
             ->update(['role' => $request->role]);
 
-        return redirect('/groups/' . $group_id . '/detail');
+        return redirect('/events/' . $event_id . '/detail');
     }
 }

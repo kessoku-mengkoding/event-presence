@@ -2,12 +2,12 @@
 
 @section('content')
   <div class="mx-auto mt-12 max-w-md">
-    <h1 class="text-gradient-mktg mb-10 text-3xl font-bold">Create New Group</h1>
+    <h1 class="text-gradient-mktg mb-10 text-3xl font-bold">Create New Event</h1>
 
-    <form action="/groups" method="POST" class="mt-6" enctype="multipart/form-data"> @csrf @method('POST')
+    <form action="/events" method="POST" class="mt-6" enctype="multipart/form-data"> @csrf @method('POST')
       <div class="flex flex-col items-center gap-4">
         <div class="h-24 w-24 overflow-clip rounded-full bg-black">
-          <img alt="Group Image" id="uploadPreview">
+          <img alt="Event Image" id="uploadPreview">
         </div>
         <input type="file" name="image" accept="image/*" id="uploadImage" hidden onchange="previewImage();">
         <label type="button" class="btn-border" for="uploadImage"">Change Picture</label>

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
-use App\Models\GroupMember;
+use App\Models\Event;
+use App\Models\EventMember;
 use App\Models\Invitation;
 use App\Models\Notification;
 use App\Models\User;
@@ -12,22 +12,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
-class GroupController extends Controller
+class EventController extends Controller
 {
     public function index_view()
     {
-        $groupmembers = GroupMember::with(['group', 'group.groupmembers'])->where('user_id', Auth::id())->get();
+        $eventmembers = EventMember::with(['event', 'event.eventmembers'])->where('user_id', Auth::id())->get();
 
-        return view('groups.index', [
-            'title' => 'Groups',
-            'groupmembers' => $groupmembers
+        return view('events.index', [
+            'title' => 'Events',
+            'eventmembers' => $eventmembers
         ]);
     }
 
     public function create_view()
     {
-        return view('groups.create', [
-            'title' => 'Create Group'
+        return view('events.create', [
+            'title' => 'Create Event'
         ]);
     }
 
@@ -44,52 +44,52 @@ class GroupController extends Controller
             $image_link = ImageController::upload_external($request);
         }
 
-        // create group
-        $group = new Group();
-        $group->name = $request->name;
-        $group->image_path = $image_link;
-        $group->description = $request->description;
-        $group->save();
+        // create event
+        $event = new Event();
+        $event->name = $request->name;
+        $event->image_path = $image_link;
+        $event->description = $request->description;
+        $event->save();
 
         // create qr team to join automatically
 
-        $redirect_join_url = "/groups/join/redirect?group_id=" . $group->id;
+        $redirect_join_url = "/events/join/redirect?event_id=" . $event->id;
         $qr_code_path = ImageController::generateQrUrl($redirect_join_url);
-        $group->qr_code_path = $qr_code_path;
-        $group->save();
+        $event->qr_code_path = $qr_code_path;
+        $event->save();
 
-        // add user to group as groupmember
-        $group_member = new GroupMember();
+        // add user to event as eventmember
+        $event_member = new EventMember();
         $groum_member_data = [
             'user_id' => Auth::id(),
-            'group_id' => $group->id,
+            'event_id' => $event->id,
             'role' => 'owner',
         ];
-        $group_member->fill($groum_member_data);
-        $group_member->save();
+        $event_member->fill($groum_member_data);
+        $event_member->save();
 
-        return redirect('/groups')->with('message', 'Group created');
+        return redirect('/events')->with('message', 'Event created');
     }
 
     public function detail($id)
     {
-        $group = Group::with('groupmembers')->find($id);
-        $user_in_group = DB::table('groupmembers')
-            ->where('group_id', $id)
+        $event = Event::with('eventmembers')->find($id);
+        $user_in_event = DB::table('eventmembers')
+            ->where('event_id', $id)
             ->where('user_id', Auth::id())
             ->first();
 
         $pendings = Invitation::with(['user'])
-            ->where('group_id', $id)
+            ->where('event_id', $id)
             ->get();
 
         $timetable = new TimetableController();
-        $timetables = $timetable->filter_by_group($id);
+        $timetables = $timetable->filter_by_event($id);
 
-        return view('groups.detail', [
-            'title' => 'Group Detail',
-            'group' => $group,
-            'user_in_group' => $user_in_group,
+        return view('events.detail', [
+            'title' => 'Event Detail',
+            'event' => $event,
+            'user_in_event' => $user_in_event,
             'superuser' => ['admin', 'owner'],
             'pendings' => $pendings,
             'timetables' => $timetables
@@ -98,54 +98,54 @@ class GroupController extends Controller
 
     public function join_view(Request $request)
     {
-        return view('groups.join', [
-            'title' => 'Join Group'
+        return view('events.join', [
+            'title' => 'Join Event'
         ]);
     }
 
     public function join(Request $request)
     {
-        $group = DB::select('SELECT id FROM groups WHERE id = ?', [$request->id]);
-        if (!$group) {
-            return back()->with('message', 'Group not found');
+        $event = DB::select('SELECT id FROM events WHERE id = ?', [$request->id]);
+        if (!$event) {
+            return back()->with('message', 'Event not found');
         }
 
-        $already_join = DB::select('SELECT id FROM groupmembers WHERE user_id = ? && group_id = ?', [Auth::id(), $request->id]);
+        $already_join = DB::select('SELECT id FROM eventmembers WHERE user_id = ? && event_id = ?', [Auth::id(), $request->id]);
         if ($already_join) {
-            return back()->with('message', 'You alredy join this group before');
+            return back()->with('message', 'You alredy join this event before');
         }
 
-        $groupMember = new GroupMember();
-        $groupMember->user_id = Auth::id();
-        $groupMember->group_id = $request->id;
-        $groupMember->save();
+        $eventMember = new EventMember();
+        $eventMember->user_id = Auth::id();
+        $eventMember->event_id = $request->id;
+        $eventMember->save();
 
-        return redirect('/groups/' . $request->id . '/detail')->with("message", "Success join group");
+        return redirect('/events/' . $request->id . '/detail')->with("message", "Success join event");
     }
 
     public function join_redirect(Request $request)
     {
-        // yyy.com/groups/join/redirect?group_id=
+        // yyy.com/events/join/redirect?event_id=
 
-        $group = DB::select('SELECT id FROM groups WHERE id = ?', [$request->input("group_id")]);
-        if (!$group) {
-            return back()->with('message', 'Group not found');
+        $event = DB::select('SELECT id FROM events WHERE id = ?', [$request->input("event_id")]);
+        if (!$event) {
+            return back()->with('message', 'Event not found');
         }
 
-        $already_join = DB::select('SELECT id FROM groupmembers WHERE user_id = ? && group_id = ?', [Auth::id(), $request->input("group_id")]);
+        $already_join = DB::select('SELECT id FROM eventmembers WHERE user_id = ? && event_id = ?', [Auth::id(), $request->input("event_id")]);
         if ($already_join) {
-            if (url()->previous() == env('APP_COMPLETE_URL') . "/groups/join/scan") {
-                return redirect("/groups/join")->with('message', 'You already join this group before');
+            if (url()->previous() == env('APP_COMPLETE_URL') . "/events/join/scan") {
+                return redirect("/events/join")->with('message', 'You already join this event before');
             }
-            return back()->with('message', 'You already join this group before');
+            return back()->with('message', 'You already join this event before');
         }
 
-        $groupMember = new GroupMember();
-        $groupMember->user_id = Auth::id();
-        $groupMember->group_id = $request->input("group_id");
-        $groupMember->save();
+        $eventMember = new EventMember();
+        $eventMember->user_id = Auth::id();
+        $eventMember->event_id = $request->input("event_id");
+        $eventMember->save();
 
-        return redirect('/groups/' . $request->input("group_id") . '/detail')->with("message", "Success join group");
+        return redirect('/events/' . $request->input("event_id") . '/detail')->with("message", "Success join event");
     }
 
     public function join_by_upload_qr(Request $request)
@@ -165,21 +165,21 @@ class GroupController extends Controller
         ]);
         $redirect_url = $response->body();
 
-        if (strpos($redirect_url, '/groups/join/redirect?group_id=') !== false) {
+        if (strpos($redirect_url, '/events/join/redirect?event_id=') !== false) {
             return redirect($redirect_url);
         } else {
-            return back()->with("message", "Group not found");
+            return back()->with("message", "Event not found");
         }
     }
 
     public function scan()
     {
-        return view("groups.scan");
+        return view("events.scan");
     }
 
     public function destroy($id)
     {
-        DB::delete('DELETE FROM groups WHERE id = ?', [$id]);
-        return redirect('/groups')->with('message', 'Group deleted');
+        DB::delete('DELETE FROM events WHERE id = ?', [$id]);
+        return redirect('/events')->with('message', 'Event deleted');
     }
 }

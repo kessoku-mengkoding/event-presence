@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
+use App\Models\Event;
 use App\Models\Timetable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\URL;
 
 class TimetableController extends Controller
 {
-    public function create_view($group_id)
+    public function create_view($event_id)
     {
-        $group = Group::where('id', $group_id)->first();
+        $event = Event::where('id', $event_id)->first();
 
         return view('timetables.new', [
-            'group_id' => $group_id,
-            'group' => $group,
+            'event_id' => $event_id,
+            'event' => $event,
             'title' => 'New Timetable'
         ]);
     }
@@ -32,7 +32,7 @@ class TimetableController extends Controller
             'lateness_tolerance' => 'required|numeric|gte:0',
             'start' => 'required|date',
             'end' => 'required|date|after:start',
-            'group_id' => 'required',
+            'event_id' => 'required',
         ]);
 
         $timetable = new Timetable();
@@ -44,11 +44,11 @@ class TimetableController extends Controller
         $timetable->lateness_tolerance = $request->lateness_tolerance;
         $timetable->start = $request->start;
         $timetable->end = $request->end;
-        $timetable->group_id = $request->group_id;
+        $timetable->event_id = $request->event_id;
         $timetable->created_by = Auth::id();
         $timetable->save();
 
-        $redirect_url = env('APP_COMPLETE_URL') . "/presences/get-device-information?group_id=" . $request->group_id . "&timetable_id=" . $timetable->id;
+        $redirect_url = env('APP_COMPLETE_URL') . "/presences/get-device-information?event_id=" . $request->event_id . "&timetable_id=" . $timetable->id;
         $imageController = new ImageController();
         $qr_code_path = $imageController->generateQrUrl($redirect_url);
         $timetable->qr_code_path = $qr_code_path;
@@ -57,19 +57,19 @@ class TimetableController extends Controller
         // create notif
         // NotificationController::create(Auth::id(), '', 'New timetable has been created', 'timetable', []);
 
-        return redirect('/groups/' . $request->group_id . '/detail')->with('message', 'Timetable created');
+        return redirect('/events/' . $request->event_id . '/detail')->with('message', 'Timetable created');
     }
 
-    public function filter_by_group($group_id)
+    public function filter_by_event($event_id)
     {
-        return Timetable::where('group_id', $group_id)->get();
+        return Timetable::where('event_id', $event_id)->get();
     }
 
     public function scan_me_view($timetable_id)
     {
         return view('timetables.scan-me', [
-           'title' => 'Scan me',
-            'timetable' => Timetable::with('group')->where('id', $timetable_id)->first(),
+            'title' => 'Scan me',
+            'timetable' => Timetable::with('event')->where('id', $timetable_id)->first(),
             'previous_url' => URL::previous()
         ]);
     }

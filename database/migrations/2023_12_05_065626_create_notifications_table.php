@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('type', [
                 'presence', // when someone presenced
                 'timetable', // when there is a new timetable
-                'groupmember' // when there is a new member
+                'eventmember' // when there is a new member
             ])->nullable();
             $table->json('key');
             $table->timestamps();

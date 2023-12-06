@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
+use App\Models\Event;
 use App\Models\Presence;
 use App\Models\Timetable;
 use App\Models\User;
@@ -18,7 +18,7 @@ class UserController extends Controller
         $type = $request->input('type');
 
         $user = User::where('id', Auth::id())->first();
-        $timetables = User::with(['groupmembers.group.timetables'])
+        $timetables = User::with(['eventmembers.event.timetables'])
             ->where('id', Auth::id())
             ->first();
 
@@ -28,14 +28,14 @@ class UserController extends Controller
 
         $helper = new HelperController();
 
-        $group_ids = array();
-        foreach ($timetables->groupmembers as $member) {
-            foreach ($member->group->timetables as $timetable) {
-                $timetable->is_presence = Presence::where('groupmember_id', $member->id)
-                                        ->where('timetable_id', $timetable->id)
-                                        ->exists();
+        $event_ids = array();
+        foreach ($timetables->eventmembers as $member) {
+            foreach ($member->event->timetables as $timetable) {
+                $timetable->is_presence = Presence::where('eventmember_id', $member->id)
+                    ->where('timetable_id', $timetable->id)
+                    ->exists();
 
-                array_push($group_ids, $member->group->id);
+                array_push($event_ids, $member->event->id);
 
                 if ($currentDateTime >= $timetable->start && $currentDateTime <= $timetable->end) {
                     $time_dif = $helper->calculateDatetimeDifference($currentDateTime, $timetable->end);
@@ -53,11 +53,11 @@ class UserController extends Controller
             }
         }
 
-        $group_ids = array_unique($group_ids);
-        $recent_timetables = Timetable::with('group')
-                                        ->whereIn('group_id', $group_ids)
-                                        ->orderBy('created_at','desc')
-                                        ->get();
+        $event_ids = array_unique($event_ids);
+        $recent_timetables = Timetable::with('event')
+            ->whereIn('event_id', $event_ids)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('home', [
             'type' => $type,

@@ -11,12 +11,12 @@
     </div>
   @endif --}}
   <div class="relative mx-auto my-12 max-w-2xl">
-    <h1 class="my-6 text-2xl font-bold"><span class="text-gradient-purple-coral">{{ $group->name }}</span> <span
+    <h1 class="my-6 text-2xl font-bold"><span class="text-gradient-purple-coral">{{ $event->name }}</span> <span
         class="text-gray-300">/</span> New Timetable</h1>
     <form action="/timetables" method="POST" class="flex flex-col">
       @csrf
       @method('POST')
-      <input hidden type="text" name="group_id" value="{{ $group_id }}" class="input">
+      <input hidden type="text" name="event_id" value="{{ $event_id }}" class="input">
       <label for="" class="font-semibold">Title</label>
       <input type="text" name="title" id="" value="{{ old('title') }}" class="input mt-2">
       @error('title')
@@ -74,7 +74,7 @@
       <button class="btn-primary mt-6">Create</button>
     </form>
 
-    <a href="/groups/{{ $group_id }}/detail"
+    <a href="/events/{{ $event_id }}/detail"
       class="fixed left-12 top-1/2 flex h-12 w-12 -translate-y-1/2 transform items-center justify-center rounded-full bg-black p-4">
       <i class="fa-solid fa-angle-left text-white"></i>
     </a>

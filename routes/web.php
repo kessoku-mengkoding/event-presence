@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\GroupMemberController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventMemberController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LoginController;
@@ -10,7 +10,7 @@ use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\UserController;
-use App\Models\GroupMember;
+use App\Models\EventMember;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,27 +47,27 @@ Route::delete('/account', [UserController::class, 'destroy'])->middleware('auth'
 Route::post('/users/{id}/profile-picture', [ImageController::class, 'changeProfilePicture'])->middleware('auth');
 Route::delete('/users/{id}/profile-picture', [ImageController::class, 'delete'])->middleware('auth');
 
-Route::get('/groups', [GroupController::class, 'index_view'])->middleware('auth');
-Route::get('/groups/create', [GroupController::class, 'create_view'])->middleware('auth');
-Route::post('/groups', [GroupController::class, 'create'])->middleware('auth');
-Route::get('/groups/{id}/detail', [GroupController::class, 'detail'])->middleware('auth');
-Route::delete('/groups/{id}', [GroupController::class, 'destroy'])->middleware('auth');
-Route::get('/groups/join', [GroupController::class, 'join_view'])->middleware('auth');
-Route::post('/groups/join', [GroupController::class, 'join'])->middleware('auth');
-Route::get('/groups/join/redirect', [GroupController::class, 'join_redirect'])->middleware('auth');
-Route::get('/groups/join/scan', [GroupController::class, 'scan'])->middleware('auth');
-Route::post('/groups/join/qr-image', [GroupController::class, 'join_by_upload_qr'])->middleware('auth');
-Route::delete('/groups/{group_id}/member/{member_id}', [GroupMemberController::class, 'destroy'])->middleware('auth');
-Route::put('/groups/{group_id}/member/{member_id}/role', [GroupMemberController::class, 'destroy'])->middleware('auth');
+Route::get('/events', [EventController::class, 'index_view'])->middleware('auth');
+Route::get('/events/create', [EventController::class, 'create_view'])->middleware('auth');
+Route::post('/events', [EventController::class, 'create'])->middleware('auth');
+Route::get('/events/{id}/detail', [EventController::class, 'detail'])->middleware('auth');
+Route::delete('/events/{id}', [EventController::class, 'destroy'])->middleware('auth');
+Route::get('/events/join', [EventController::class, 'join_view'])->middleware('auth');
+Route::post('/events/join', [EventController::class, 'join'])->middleware('auth');
+Route::get('/events/join/redirect', [EventController::class, 'join_redirect'])->middleware('auth');
+Route::get('/events/join/scan', [EventController::class, 'scan'])->middleware('auth');
+Route::post('/events/join/qr-image', [EventController::class, 'join_by_upload_qr'])->middleware('auth');
+Route::delete('/events/{event_id}/member/{member_id}', [EventMemberController::class, 'destroy'])->middleware('auth');
+Route::put('/events/{event_id}/member/{member_id}/role', [EventMemberController::class, 'destroy'])->middleware('auth');
 
 Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth');
 Route::get('/invitations', [InvitationController::class, 'index'])->middleware('auth');
 Route::put('/invitations/{id}/accept', [InvitationController::class, 'accept'])->middleware('auth');
 Route::put('/invitations/{id}/decline', [InvitationController::class, 'decline'])->middleware('auth');
 
-Route::post('/groups/{id}/invite', [InvitationController::class, 'create'])->middleware('auth');
+Route::post('/events/{id}/invite', [InvitationController::class, 'create'])->middleware('auth');
 
-Route::get('/timetables/{group_id}/new', [TimetableController::class, 'create_view'])->middleware('auth');
+Route::get('/timetables/{event_id}/new', [TimetableController::class, 'create_view'])->middleware('auth');
 Route::post('/timetables', [TimetableController::class, 'create'])->middleware('auth');
 Route::delete('/timetables/{id}', [TimetableController::class, 'delete'])->middleware('auth');
 Route::get('/timetables/{id}/scan-me', [TimetableController::class, 'scan_me_view'])->middleware('auth');
