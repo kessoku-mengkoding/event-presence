@@ -23,11 +23,11 @@ return new class extends Migration
             $table->dateTimeTz('start');
             $table->dateTimeTz('end');
             $table->string('qr_code_path')->nullable();
-            $table->uuid('group_id');
+            $table->uuid('event_id');
             $table->uuid('created_by');
             $table->timestamps();
 
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
