@@ -1,16 +1,14 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventMemberController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvitationController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PresenceController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\UserController;
-use App\Models\EventMember;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,15 +22,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/sign-up', [AuthController::class, 'registerView'])->middleware('guest');
+Route::post('/sign-up', [AuthController::class, 'register']);
 
-Route::get('/sign-up', [RegisterController::class, 'index'])->middleware('guest');
-Route::post('/sign-up', [RegisterController::class, 'store']);
-
-Route::get('/sign-in', [LoginController::class, 'index'])->name('login')->middleware('guest');
-Route::post('/sign-in', [LoginController::class, 'authenticate']);
-Route::get('/forgot-password', [LoginController::class, 'forgot_password_view']);
-Route::post('/logout', [LoginController::class, 'logout']);
-Route::put('/change-password', [LoginController::class, 'updatePassword'])->middleware('auth');
+Route::get('/sign-in', [AuthController::class, 'loginView'])->name('login')->middleware('guest');
+Route::post('/sign-in', [AuthController::class, 'login']);
+Route::get('/forgot-password', [AuthController::class, 'forgotPasswordView']);
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::put('/change-password', [AuthController::class, 'changePassword'])->middleware('auth');
 
 Route::get('/', [UserController::class, 'index'])->middleware('auth');
 Route::get('/reminder', [UserController::class, 'reminder'])->middleware('auth');

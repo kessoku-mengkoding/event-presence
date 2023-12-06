@@ -25,15 +25,15 @@
       <form action="/sign-up" method="POST"> @csrf
         <div class="flex gap-4">
           <div class="w-6/12">
-            <label for="name" class="font-semibold">Name</label>
-            <input type="text" name="name" id="" class="input mt-2 w-full">
-            @error('name')
+            <label for="nik" class="font-semibold">NIK</label>
+            <input type="text" name="nik" value="{{ old('nik') }}" class="input mt-2 w-full">
+            @error('nik')
               <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
             @enderror
           </div>
           <div class="w-6/12">
             <label for="username" class="font-semibold">Username</label>
-            <input type="text" name="username" id="" class="input mt-2 w-full">
+            <input type="text" name="username" value="{{ old('username') }}" class="input mt-2 w-full">
             @error('username')
               <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
             @enderror
@@ -41,14 +41,14 @@
         </div>
         <div class="mt-6 flex flex-col">
           <label for="email" class="font-semibold">Email</label>
-          <input type="email" name="email" class="input mt-2">
+          <input type="email" name="email" value="{{ old('email') }}" class="input mt-2">
           @error('email')
             <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
           @enderror
         </div>
         <div class="mt-6 flex flex-col">
           <label for="password" class="font-semibold">Password</label>
-          <input type="password" placeholder="6+ characters" name="password" id=""
+          <input type="password" placeholder="6+ characters" name="password"
             class="input mt-2 placeholder:text-slate-300">
           @error('password')
             <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
@@ -56,7 +56,7 @@
         </div>
         <div class="mt-6 flex flex-col">
           <label for="confirm_password" class="font-semibold">Confirm Password</label>
-          <input type="password" name="confirm_password" id="" class="input mt-2">
+          <input type="password" name="confirm_password" class="input mt-2">
           @error('confirm_password')
             <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
           @enderror
