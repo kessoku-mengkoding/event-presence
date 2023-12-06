@@ -34,10 +34,9 @@ function formatDateTime($inputDateTime)
     }
   </script>
 
-  <div class="flex">
+  <div class="flex justify-center">
 
-    <div class="mt-12 w-3/12">
-      {{-- Recent --}}
+    {{-- <div class="mt-12 w-3/12">
       <div class="w-full">
         <div class="-mb-[6px] rounded-t-lg bg-black px-4 pb-3 pt-1">
           <h1 class="text-gradient-copilot font-semibold"><i class="fa-solid fa-cannabis mr-2"></i> Recent</h1>
@@ -59,7 +58,6 @@ function formatDateTime($inputDateTime)
         </ul>
       </div>
 
-      {{-- Done --}}
       <div class="mt-6 w-full">
         <div class="-mb-[6px] rounded-t-lg bg-black px-4 pb-3 pt-1">
           <h1 class="text-gradient-copilot font-semibold"><i class="fa-solid fa-dove mr-2"></i> Done</h1>
@@ -84,7 +82,7 @@ function formatDateTime($inputDateTime)
           @endforeach
         </ul>
       </div>
-    </div>
+    </div> --}}
 
     <div class="w-8/12">
       <div class="mt-12 flex justify-center gap-4">
