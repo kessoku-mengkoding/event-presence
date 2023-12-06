@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('image_path')->nullable();
             $table->string('qr_code_path')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('is_favorite')->default(false);
             $table->enum('type', ['invite only', 'anyone can join', 'closed'])->default('anyone can join');
             $table->timestamps();
         });
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('events');
     }
 };
