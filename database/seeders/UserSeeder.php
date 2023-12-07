@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class UserSeeder extends Seeder
 {
@@ -15,11 +16,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
+
         DB::table('users')->insert(
         [
             [
                 'id' => Str::uuid(),
-                'username' => Str::random(10),
+                'username' => $faker->userName,
                 'email' => 'admin@admin.com',
                 'password' => Hash::make('testtest'),
                 'is_verified' => true,
@@ -27,7 +30,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'id' => Str::uuid(),
-                'username' => Str::random(10),
+                'username' => $faker->userName,
                 'email' => 'test@test.com',
                 'password' => Hash::make('testtest'),
                 'is_verified' => true,

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
 use App\Models\Presence;
 use App\Models\Timetable;
 use App\Models\User;
@@ -13,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function homeView(Request $request)
     {
         $type = $request->input('type');
 
@@ -37,11 +36,14 @@ class UserController extends Controller
 
                 array_push($event_ids, $member->event->id);
 
-                if ($currentDateTime >= $timetable->start && $currentDateTime <= $timetable->end) {
+                $IS_ONGOING = $currentDateTime >= $timetable->start && $currentDateTime <= $timetable->end;
+                $IS_UPCOMING = $currentDateTime < $timetable->start;
+
+                if ($IS_ONGOING) {
                     $time_dif = $helper->calculateDatetimeDifference($currentDateTime, $timetable->end);
                     $timetable->status = 'ongoing';
                     $timetable->time_description = $time_dif . ' left';
-                } else if ($currentDateTime < $timetable->start) {
+                } else if ($IS_UPCOMING) {
                     $time_dif = $helper->calculateDatetimeDifference($currentDateTime, $timetable->start);
                     $timetable->status = 'upcoming';
                     $timetable->time_description = $time_dif . ' to start';
@@ -69,28 +71,28 @@ class UserController extends Controller
         ]);
     }
 
-    public function reminder()
+    public function reminderView()
     {
         return view('home.reminder', [
             'title' => 'Reminder'
         ]);
     }
 
-    public function ongoing()
+    public function ongoingView()
     {
         return view('home.ongoing', [
             'title' => 'Ongoing'
         ]);
     }
 
-    public function upcoming()
+    public function upcomingView()
     {
         return view('home.upcoming', [
             'title' => 'Upcoming'
         ]);
     }
 
-    public function profile_view(string $id)
+    public function profileView(string $id)
     {
         if ($id == 'me') {
             $id = Auth::id();
@@ -103,7 +105,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit_view($id)
+    public function editView($id)
     {
         if ($id == 'me') {
             $id = Auth::id();
@@ -115,7 +117,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function password_view($id)
+    public function passwordView($id)
     {
         if ($id == 'me') {
             $id = Auth::id();
@@ -136,7 +138,7 @@ class UserController extends Controller
         return back()->with('message', 'Update profile success');
     }
 
-    public function destroy()
+    public function delete()
     {
         $id = Auth::id();
         User::destroy($id);

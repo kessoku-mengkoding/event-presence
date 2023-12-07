@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PresenceController extends Controller
 {
-    public function index_view($timetable_id)
+    public function indexView($timetable_id)
     {
         $presences = Presence::with('user')->where('timetable_id', $timetable_id)->get();
 
@@ -22,7 +22,19 @@ class PresenceController extends Controller
         ]);
     }
 
-    public function get_device_info(Request $request)
+    public function historyView()
+    {
+        $user_presences = User::with(['presences.timetable', 'presences.eventmember.event'])
+            ->where('id', Auth::id())
+            ->first();
+
+        return view('presences.history', [
+            'user' => $user_presences,
+            'title' => 'History'
+        ]);
+    }
+
+    public function getDeviceInfo(Request $request)
     {
         return view('presences.get-device-info', [
             'event_id' => $request->input('event_id'),
@@ -46,7 +58,7 @@ class PresenceController extends Controller
         return $angle * $earthRadius;
     }
 
-    public function presence_redirect(Request $request)
+    public function presenceRedirect(Request $request)
     // "/presences/get-device-information?event_id=&timetable_id="
     {
         date_default_timezone_set('Asia/Makassar');
@@ -91,17 +103,5 @@ class PresenceController extends Controller
         $presence->save();
 
         return redirect('/')->with('message', 'Presence success');
-    }
-
-    public function history_view()
-    {
-        $user_presences = User::with(['presences.timetable', 'presences.eventmember.event'])
-            ->where('id', Auth::id())
-            ->first();
-
-        return view('presences.history', [
-            'user' => $user_presences,
-            'title' => 'History'
-        ]);
     }
 }

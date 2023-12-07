@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class HelperController extends Controller
 {
-    public function is_valid_email($email)
+    public function isValidEmail($email): bool
     {
         $pattern = '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/';
         return preg_match($pattern, $email);
     }
 
-    public function calculateDatetimeDifference($datetime1, $datetime2)
+    public function calculateDatetimeDifference($datetime1, $datetime2): string
     {
         $datetime1 = new DateTime($datetime1);
         $datetime2 = new DateTime($datetime2);

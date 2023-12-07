@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\EventMember;
 use App\Models\Invitation;
 use App\Models\Notification;
+use App\Models\Timetable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Http;
 
 class EventController extends Controller
 {
-    public function index_view()
+    public function indexView()
     {
         $eventmembers = EventMember::with(['event', 'event.eventmembers'])->where('user_id', Auth::id())->get();
 
@@ -24,11 +25,47 @@ class EventController extends Controller
         ]);
     }
 
-    public function create_view()
+    public function createView()
     {
         return view('events.create', [
             'title' => 'Create Event'
         ]);
+    }
+
+    public function detailView($id)
+    {
+        $event = Event::with('eventmembers')->find($id);
+        $user_in_event = DB::table('eventmembers')
+            ->where('event_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        $pendings = Invitation::with(['user'])
+            ->where('event_id', $id)
+            ->get();
+
+        $timetables = Timetable::where('event_id', $id)->get();
+
+        return view('events.detail', [
+            'title' => 'Event Detail',
+            'event' => $event,
+            'user_in_event' => $user_in_event,
+            'superuser' => ['admin', 'owner'],
+            'pendings' => $pendings,
+            'timetables' => $timetables
+        ]);
+    }
+
+    public function joinView()
+    {
+        return view('events.join', [
+            'title' => 'Join Event'
+        ]);
+    }
+
+    public function scanQRView()
+    {
+        return view("events.scan");
     }
 
     public function create(Request $request)
@@ -41,7 +78,7 @@ class EventController extends Controller
         // handle image
         $image_link = NULL;
         if ($request->file('image')) {
-            $image_link = ImageController::upload_external($request);
+            $image_link = ImageController::uploadToExternalQRService($request);
         }
 
         // create event
@@ -52,55 +89,22 @@ class EventController extends Controller
         $event->save();
 
         // create qr team to join automatically
-
         $redirect_join_url = "/events/join/redirect?event_id=" . $event->id;
         $qr_code_path = ImageController::generateQrUrl($redirect_join_url);
         $event->qr_code_path = $qr_code_path;
         $event->save();
 
         // add user to event as eventmember
-        $event_member = new EventMember();
-        $groum_member_data = [
+        $eventmember = new EventMember();
+        $eventmember_data = [
             'user_id' => Auth::id(),
             'event_id' => $event->id,
             'role' => 'owner',
         ];
-        $event_member->fill($groum_member_data);
-        $event_member->save();
+        $eventmember->fill($eventmember_data);
+        $eventmember->save();
 
         return redirect('/events')->with('message', 'Event created');
-    }
-
-    public function detail($id)
-    {
-        $event = Event::with('eventmembers')->find($id);
-        $user_in_event = DB::table('eventmembers')
-            ->where('event_id', $id)
-            ->where('user_id', Auth::id())
-            ->first();
-
-        $pendings = Invitation::with(['user'])
-            ->where('event_id', $id)
-            ->get();
-
-        $timetable = new TimetableController();
-        $timetables = $timetable->filter_by_event($id);
-
-        return view('events.detail', [
-            'title' => 'Event Detail',
-            'event' => $event,
-            'user_in_event' => $user_in_event,
-            'superuser' => ['admin', 'owner'],
-            'pendings' => $pendings,
-            'timetables' => $timetables
-        ]);
-    }
-
-    public function join_view(Request $request)
-    {
-        return view('events.join', [
-            'title' => 'Join Event'
-        ]);
     }
 
     public function join(Request $request)
@@ -123,7 +127,7 @@ class EventController extends Controller
         return redirect('/events/' . $request->id . '/detail')->with("message", "Success join event");
     }
 
-    public function join_redirect(Request $request)
+    public function joinRedirect(Request $request)
     {
         // yyy.com/events/join/redirect?event_id=
 
@@ -148,7 +152,7 @@ class EventController extends Controller
         return redirect('/events/' . $request->input("event_id") . '/detail')->with("message", "Success join event");
     }
 
-    public function join_by_upload_qr(Request $request)
+    public function joinByUploadQR(Request $request)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif',
@@ -158,26 +162,17 @@ class EventController extends Controller
             return back()->with('message', 'Something went wrong');
         }
 
-        $url = ImageController::upload_external($request);
+        $url = ImageController::uploadToExternalQRService($request);
 
-        $response = Http::post(env('QR_SERVICE_URL') . '/read', [
-            'url' => $url
-        ]);
+        $response = Http::post(env('QR_SERVICE_URL') . '/read', ['url' => $url]);
         $redirect_url = $response->body();
 
-        if (strpos($redirect_url, '/events/join/redirect?event_id=') !== false) {
-            return redirect($redirect_url);
-        } else {
-            return back()->with("message", "Event not found");
-        }
+        return strpos($redirect_url, '/events/join/redirect?event_id=') !== false
+            ? redirect($redirect_url)
+            : back()->with("message", "Event not found");
     }
 
-    public function scan()
-    {
-        return view("events.scan");
-    }
-
-    public function destroy($id)
+    public function delete($id)
     {
         DB::delete('DELETE FROM events WHERE id = ?', [$id]);
         return redirect('/events')->with('message', 'Event deleted');

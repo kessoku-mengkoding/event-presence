@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\URL;
 
 class TimetableController extends Controller
 {
-    public function create_view($event_id)
+    public function createView($event_id)
     {
         $event = Event::where('id', $event_id)->first();
 
@@ -60,12 +60,7 @@ class TimetableController extends Controller
         return redirect('/events/' . $request->event_id . '/detail')->with('message', 'Timetable created');
     }
 
-    public function filter_by_event($event_id)
-    {
-        return Timetable::where('event_id', $event_id)->get();
-    }
-
-    public function scan_me_view($timetable_id)
+    public function scanQRView($timetable_id)
     {
         return view('timetables.scan-me', [
             'title' => 'Scan me',

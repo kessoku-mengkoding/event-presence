@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
-    public static function upload_external(Request $request)
+    public static function uploadToExternalQRService(Request $request): string | null
     {
         $apiKey = env('IMGBB_API_KEY');
-
+        
         $response = Http::withoutVerifying()->attach(
             'image',
             file_get_contents($request->file('image')->path()),
@@ -37,9 +37,8 @@ class ImageController extends Controller
     public function changeProfilePicture($id, Request $request)
     {
         $id = $id == 'me' ? Auth::id() : $id;
-
         try {
-            $imageUrl = $this::upload_external($request);
+            $imageUrl = $this::uploadToExternalQRService($request);
 
             if ($imageUrl) {
                 DB::table('users')
@@ -47,9 +46,8 @@ class ImageController extends Controller
                     ->update(['profile_picture_path' => $imageUrl]);
 
                 return back()->with('message', 'Change profile picture success');
-            } else {
-                return back()->with('error', 'Image upload failed');
             }
+            return back()->with('error', 'Image upload failed');
         } catch (\Exception $e) {
             return back()->with('error', 'An error occurred: ' . $e->getMessage());
         }

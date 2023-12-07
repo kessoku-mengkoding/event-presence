@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class EventMemberController extends Controller
 {
-    public function destroy($event_id, $member_id)
+    public function delete($event_id, $member_id)
     {
         DB::table('eventmembers')
             ->where('event_id', $event_id)

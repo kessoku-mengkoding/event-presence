@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class InvitationController extends Controller
 {
-    public function index()
+    public function indexView()
     {
         $invitations = Invitation::with(['event', 'eventmember.user'])
             ->where('user_id', Auth::id())
@@ -26,7 +26,7 @@ class InvitationController extends Controller
     public function create($event_id, Request $request)
     {
         $helper = new HelperController();
-        $is_email = $helper->is_valid_email($request->key);
+        $is_email = $helper->isValidEmail($request->key);
 
         // check is user exist
         $user = User::where($is_email ? 'email' : 'username', $request->key)->first();
