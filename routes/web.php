@@ -8,6 +8,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PresenceController;
+use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -69,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'indexView']);
-        Route::get('/residents', [AdminController::class, 'indexView']);
+        Route::get('/residents', [ResidentController::class, 'indexView']);
         Route::get('/events/create', [EventController::class, 'createView']);
         Route::post('/events', [EventController::class, 'create']);
         Route::delete('/events/{id}', [EventController::class, 'delete']);
