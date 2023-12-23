@@ -1,21 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-  @if (session('message'))
-    <div id="toast-simple"
-      class="space-x mb-5 flex w-full max-w-xs items-center gap-4 space-x-4 divide-x divide-gray-200 rounded-lg bg-white p-4 text-gray-500 shadow rtl:space-x-reverse rtl:divide-x-reverse dark:divide-gray-700 dark:bg-gray-800 dark:text-gray-400"
-      role="alert">
-      <svg class="h-5 w-5 rotate-45 text-blue-600 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-        fill="none" viewBox="0 0 18 20">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9" />
-      </svg>
-      <div class="ps-4 text-sm font-normal">
-        {{ session('message') }}
-      </div>
-    </div>
-  @endif
-
   <form class="max-w-sm" action="/residents/create" method="POST">
     @csrf
     <h1 class="mb-4 text-xl font-bold">Tambah Penduduk</h1>

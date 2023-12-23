@@ -14,20 +14,16 @@
         <p>{{ $eventmember->user->name }}</p>
         <p>{{ $eventmember->user->email }}</p>
         <p>{{ $eventmember->role }}</p>
-        @if (in_array($user_in_event->role, ['owner', 'admin']) && $eventmember->user_id != auth()->user()->id)
-          <form action="/events/{{ $event->id }}/member/{{ $eventmember->user->id }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button class="btn">Delete</button>
-          </form>
-        @endif
-        @if ($eventmember->user_id != auth()->user()->id && auth()->user()->role == 'admin')
-          <form action="/events/{{ $event->id }}/members/{{ $eventmember->id }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button class="btn">Delete</button>
-          </form>
-        @endif
+        <form action="/events/{{ $event->id }}/member/{{ $eventmember->user->id }}" method="POST">
+          @csrf
+          @method('DELETE')
+          <button class="btn">Delete</button>
+        </form>
+        <form action="/events/{{ $event->id }}/members/{{ $eventmember->id }}" method="POST">
+          @csrf
+          @method('DELETE')
+          <button class="btn">Delete</button>
+        </form>
       </li>
     @endforeach
   </ul>
@@ -50,32 +46,11 @@
   <br>
   <br>
 
-  <h1>Pending</h1>
-  <ul>
-    @foreach ($pendings as $pending)
-      <li class="flex gap-12 border border-black">
-        <p>{{ $pending->user->username }}</p>
-        <p>{{ $pending->created_at }}</p>
-        <form action="/invitations/{{ $pending->id }}/decline" method="POST">
-          @csrf
-          @method('PUT')
-          <button class="bg-red-500">Cancel</button>
-        </form>
-      </li>
-    @endforeach
-  </ul>
-
-  <br>
-  <br>
-  <br>
-
-  @if ($user_in_event->role == 'owner')
-    <form action="/events/{{ $event->id }}" method="POST">
-      @csrf
-      @method('DELETE')
-      <button class="btn">Delete Event</button>
-    </form>
-  @endif
+  <form action="/events/{{ $event->id }}" method="POST">
+    @csrf
+    @method('DELETE')
+    <button class="btn">Delete Event</button>
+  </form>
 
   <br>
   <br>

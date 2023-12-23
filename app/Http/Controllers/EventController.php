@@ -25,33 +25,28 @@ class EventController extends Controller
         ]);
     }
 
+    public function indexAdminView()
+    {
+        $events = Event::with('eventmembers')->get();
+        return view('admin.events.index', compact('events'));
+    }
+
     public function createView()
     {
-        return view('events.create', [
+        return view('admin.events.create', [
             'title' => 'Create Event'
         ]);
     }
 
     public function detailView($id)
     {
-        $event = Event::with('eventmembers')->find($id);
-        $user_in_event = DB::table('eventmembers')
-            ->where('event_id', $id)
-            ->where('user_id', Auth::id())
-            ->first();
-
-        $pendings = Invitation::with(['user'])
-            ->where('event_id', $id)
-            ->get();
-
+        $event = Event::with('eventmembers.user.resident')->find($id);
         $timetables = Timetable::where('event_id', $id)->get();
 
-        return view('events.detail', [
+        $view = Auth::user()->is_admin ? 'admin.events.detail' : 'events.detail';
+        return view($view, [
             'title' => 'Event Detail',
             'event' => $event,
-            'user_in_event' => $user_in_event,
-            'superuser' => ['admin', 'owner'],
-            'pendings' => $pendings,
             'timetables' => $timetables
         ]);
     }

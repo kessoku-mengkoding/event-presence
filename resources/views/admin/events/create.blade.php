@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.admin')
 
 @section('content')
   <div class="mx-auto mt-12 max-w-md">
@@ -15,7 +15,7 @@
 
       <div class="mt-10 flex flex-col">
         <label for="name" class="font-semibold">Name</label>
-        <input type="text" name="name" class="input mt-2">
+        <input type="text" name="name" class="input mt-2" placeholder="Rapat Umum IV">
         @error('name')
           <div class="mt-0.5 text-sm text-red-500">{{ $message }}</div>
         @enderror
@@ -29,8 +29,6 @@
       </div>
     </form>
   </div>
-
-
 
   <script type="text/javascript">
     function previewImage() {

@@ -74,9 +74,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/residents/create', [ResidentController::class, 'createView']);
         Route::post('/residents/create', [ResidentController::class, 'create']);
         Route::get('/users', [UserController::class, 'indexAdminView']);
+        Route::get('/events/admin', [EventController::class, 'indexAdminView']);
         Route::get('/events/create', [EventController::class, 'createView']);
         Route::post('/events', [EventController::class, 'create']);
         Route::delete('/events/{id}', [EventController::class, 'delete']);
+        Route::get('/events/{id}/detail/admin', [EventController::class, 'indexAdminView']);
         Route::delete('/events/{event_id}/member/{member_id}', [EventMemberController::class, 'delete']);
         Route::put('/events/{event_id}/member/{member_id}/role', [EventMemberController::class, '']);
         Route::post('/events/{id}/invite', [InvitationController::class, 'create']);

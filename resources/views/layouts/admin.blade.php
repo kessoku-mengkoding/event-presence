@@ -95,7 +95,7 @@
     </div>
   </nav>
 
-  <div >
+  <div>
     <aside id="logo-sidebar"
       class="fixed left-0 top-0 z-30 h-screen w-64 -translate-x-full border-r border-gray-200 bg-white pt-20 transition-transform dark:border-gray-700 dark:bg-gray-800 sm:translate-x-0"
       aria-label="Sidebar">
@@ -210,7 +210,7 @@
             </button>
             <ul id="dropdown-kegiatan" class="hidden space-y-2 py-2">
               <li>
-                <a href="/events"
+                <a href="/events/admin"
                   class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                   <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 10">
@@ -287,7 +287,22 @@
       </div>
     </aside>
 
-    <div class="px-8 pt-20 ml-64">
+    <div class="ml-64 px-8 pt-20">
+      @if (session('message'))
+        <div id="toast-simple"
+          class="space-x mb-5 flex w-full max-w-xs items-center gap-4 space-x-4 divide-x divide-gray-200 rounded-lg bg-white p-4 text-gray-500 shadow rtl:space-x-reverse rtl:divide-x-reverse dark:divide-gray-700 dark:bg-gray-800 dark:text-gray-400"
+          role="alert">
+          <svg class="h-5 w-5 rotate-45 text-blue-600 dark:text-blue-500" aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9" />
+          </svg>
+          <div class="ps-4 text-sm font-normal">
+            {{ session('message') }}
+          </div>
+        </div>
+      @endif
+
       @yield('content')
     </div>
   </div>
