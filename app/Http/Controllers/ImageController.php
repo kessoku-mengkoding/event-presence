@@ -14,7 +14,7 @@ class ImageController extends Controller
     public static function uploadToExternalQRService(Request $request): string | null
     {
         $apiKey = env('IMGBB_API_KEY');
-        
+
         $response = Http::withoutVerifying()->attach(
             'image',
             file_get_contents($request->file('image')->path()),
@@ -28,9 +28,10 @@ class ImageController extends Controller
 
     public static function generateQrUrl($string)
     {
-        $response = Http::post(env('QR_SERVICE_URL') . "/write", [
+        $response = Http::withoutVerifying()->post(env('QR_SERVICE_URL') . "/write", [
             'string' => $string
         ]);
+        
         return $response->body();
     }
 

@@ -62,8 +62,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $IS_ADMIN = auth()->user()->is_admin;
-            return redirect()->intended('/');
-            // return redirect()->intended($IS_ADMIN ? '/dashboard' : '/');
+            return redirect()->intended($IS_ADMIN ? '/dashboard' : '/');
         }
 
         return back()->with('message', 'Invalid email or password');
