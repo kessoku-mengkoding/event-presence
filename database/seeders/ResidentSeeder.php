@@ -18,7 +18,7 @@ class ResidentSeeder extends Seeder
 
         $residents = [];
 
-        for ($i = 0; $i < 20; $i++) { // Adjust the loop count based on how many residents you want to seed
+        for ($i = 0; $i < 20; $i++) {
             $residents[] = [
                 'id' => $faker->uuid,
                 'full_name' => $faker->name,

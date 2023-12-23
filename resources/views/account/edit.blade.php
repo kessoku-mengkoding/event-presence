@@ -50,8 +50,8 @@
             <input type="text" name="username" id="" value="{{ $user->username }}"
               class="input mb-6 mt-2 w-full">
             <label for="name" class="text-lg font-semibold">Name</label>
-            <input type="text" name="name" id="" value="{{ $user->name }}"
-              class="input mb-6 mt-2 w-full">
+            <input type="text" name="name" id="" value="{{ $user->resident->full_name }}" disabled
+              class="input mb-6 mt-2 w-full cursor-not-allowed">
             <label for="location" class="text-lg font-semibold">Location</label>
             <div class="mb-6 mt-2 flex items-center gap-4">
               <div class="w-full">

@@ -30,12 +30,19 @@
           </a>
         </ul>
         <div class="w-[80%]">
-          <form action="/profile" method="POST"> @csrf @method('PUT')
+          <form action="/profile/email" method="POST"> @csrf @method('PUT')
             <label for="email" class="text-lg font-semibold">Email</label>
             <input type="email" name="email" id="" value="{{ $user->email }}" class="input mt-2 w-full">
+            @error('email')
+              <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+            @enderror
+
             <div class="mt-6">
               <label for="password" class="text-lg font-semibold">Password (if changing email)</label>
               <input type="password" name="password" id="" class="input mt-2 w-full">
+              @error('password')
+                <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+              @enderror
             </div>
             <div class="mt-6 flex justify-end">
               <button class="btn-primary-sm">Save Changes</button>

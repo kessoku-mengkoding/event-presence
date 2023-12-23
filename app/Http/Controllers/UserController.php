@@ -110,7 +110,7 @@ class UserController extends Controller
         if ($id == 'me') {
             $id = Auth::id();
         }
-        $user = User::find($id);
+        $user = User::with('resident')->find($id);
         return view('account.edit', [
             'user' => $user,
             'title' => 'Profile',

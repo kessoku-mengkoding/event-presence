@@ -28,7 +28,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'email' => 'required|email:dns|unique:users',
+            'email' => 'required|email|unique:users',
             'username' => 'required|unique:users',
             'nik' => 'required|numeric',
             'password' => 'required|min:5',
@@ -54,13 +54,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'email:dns|required',
+            'email' => 'email|required',
             'password' => 'required'
         ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            $IS_ADMIN = auth()->user()->is_admin;
             return redirect()->intended('/');
+            // return redirect()->intended($IS_ADMIN ? '/dashboard' : '/');
         }
 
         return back()->with('message', 'Invalid email or password');
@@ -92,5 +95,32 @@ class AuthController extends Controller
         ]);
 
         return back()->with("message", "Password changed successfully!");
+    }
+
+    public function updateEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if (!Hash::check($request->password, auth()->user()->password)) {
+            return back()->with("message", "Password doesn't match!");
+        }
+
+        if ($request->email == auth()->user()->email) {
+            return back()->with("message", "Email is the same as before!");
+        }
+
+        $email = User::where('email', $request->email)->first();
+        if ($email) {
+            return back()->with("message", "Email already exists!");
+        }
+
+        User::whereId(auth()->user()->id)->update([
+            'email' => $request->email
+        ]);
+
+        return back()->with("message", "Email changed successfully!");
     }
 }
