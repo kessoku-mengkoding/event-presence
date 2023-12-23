@@ -102,7 +102,7 @@
       <div class="h-full overflow-y-auto bg-white px-3 pb-4 dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
           <li>
-            <router-link to="/"
+            <a href="/dashboard"
               class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
               <svg
                 class="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
@@ -113,7 +113,7 @@
                   d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
               </svg>
               <span class="ms-3">Dashboard</span>
-            </router-link>
+            </a>
           </li>
 
           <li>
@@ -146,7 +146,7 @@
                 </a>
               </li>
               <li>
-                <router-link to="/user/tambah"
+                <a href="/residents/create"
                   class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                   <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -154,7 +154,7 @@
                       d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                   </svg>
                   <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Tambah Penduduk</span>
-                </router-link>
+                </a>
               </li>
             </ul>
           </li>
@@ -178,7 +178,7 @@
             </button>
             <ul id="dropdown-pengguna" class="hidden space-y-2 py-2">
               <li>
-                <router-link to="/user/daftar"
+                <a href="/users"
                   class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                   <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 10">
@@ -186,7 +186,7 @@
                       d="M6 1h10M6 5h10M6 9h10M1.49 1h.01m-.01 4h.01m-.01 4h.01" />
                   </svg>
                   <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Daftar User</span>
-                </router-link>
+                </a>
               </li>
             </ul>
           </li>
@@ -210,7 +210,7 @@
             </button>
             <ul id="dropdown-kegiatan" class="hidden space-y-2 py-2">
               <li>
-                <router-link to="/kegiatan/daftar"
+                <a href="/events"
                   class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                   <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 10">
@@ -218,10 +218,10 @@
                       d="M6 1h10M6 5h10M6 9h10M1.49 1h.01m-.01 4h.01m-.01 4h.01" />
                   </svg>
                   <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Daftar Kegiatan</span>
-                </router-link>
+                </a>
               </li>
               <li>
-                <router-link to="/kegiatan/tambah"
+                <a href="/events/create"
                   class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                   <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 20">
@@ -229,7 +229,7 @@
                       d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm1-4H5m0 0L3 4m0 0h5.501M3 4l-.792-3H1m11 3h6m-3 3V1" />
                   </svg>
                   <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Tambah kegiatan</span>
-                </router-link>
+                </a>
               </li>
             </ul>
           </li>
@@ -252,7 +252,7 @@
             </button>
             <ul id="dropdown-absensi" class="hidden space-y-2 py-2">
               <li>
-                <router-link to="/absensi/daftar"
+                <a href="/presences"
                   class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                   <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 10">
@@ -260,18 +260,7 @@
                       d="M6 1h10M6 5h10M6 9h10M1.49 1h.01m-.01 4h.01m-.01 4h.01" />
                   </svg>
                   <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Daftar absensi</span>
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/absensi/tambah"
-                  class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                  <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                  <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Tambah absensi</span>
-                </router-link>
+                </a>
               </li>
             </ul>
           </li>

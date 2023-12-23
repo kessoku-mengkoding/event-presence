@@ -71,6 +71,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'indexView']);
         Route::get('/residents', [ResidentController::class, 'indexView']);
+        Route::get('/residents/create', [ResidentController::class, 'createView']);
+        Route::post('/residents/create', [ResidentController::class, 'create']);
+        Route::get('/users', [UserController::class, 'indexAdminView']);
         Route::get('/events/create', [EventController::class, 'createView']);
         Route::post('/events', [EventController::class, 'create']);
         Route::delete('/events/{id}', [EventController::class, 'delete']);

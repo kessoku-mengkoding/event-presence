@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function indexAdminView()
+    {
+        $users = User::with('resident')->get();
+        return view('admin.users.index', compact('users'));
+    }
+
     public function homeView(Request $request)
     {
         $type = $request->input('type');
