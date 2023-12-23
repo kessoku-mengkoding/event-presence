@@ -88,16 +88,21 @@ function formatDateTime($inputDateTime)
     <div class="w-8/12">
       <div class="mt-12 flex justify-center gap-4">
         <a href="/"
-          class="btn-sm-no-color {{ !$type ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">All</a>
+          class="btn-sm-no-color {{ !$type ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">All</a>
         <a href="/?type=ongoing"
-          class="btn-sm-no-color {{ $type == 'ongoing' ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">Ongoing</a>
+          class="btn-sm-no-color {{ $type == 'ongoing' ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">Ongoing</a>
         <a href="/?type=upcoming"
-          class="btn-sm-no-color {{ $type == 'upcoming' ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">Upcoming</a>
+          class="btn-sm-no-color {{ $type == 'upcoming' ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">Upcoming</a>
         <a href="/?type=missed"
-          class="btn-sm-no-color {{ $type == 'missed' ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">Missed</a>
+          class="btn-sm-no-color {{ $type == 'missed' ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">Missed</a>
       </div>
-
+    
       <div class="mx-auto mt-12 flex max-w-2xl flex-col gap-6 text-center">
+      @if ($timetables == null || sizeof($timetables->groupmembers) == 0)
+    <dotlottie-player class="mx-auto" src="https://lottie.host/35b76ef9-de90-4af4-967c-b5edb886af3b/gq16fXIeyQ.json"
+        background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+    <p class="text-semibold -mt-10 text-center">Nothing to see here</p>
+@endif
         @foreach ($timetables->groupmembers as $groupmembers)
           @foreach ($groupmembers->group->timetables as $timetable)
             @if (($type ? $timetable->status == $type : true) && !$timetable->is_presence)
@@ -144,6 +149,7 @@ function formatDateTime($inputDateTime)
                   {{-- <p class="text-gradient-premium-support pt-[12px] text-sm font-bold">{{ $timetable->time_description }} --}}
                 </div>
               </div>
+ 
             @endif
           @endforeach
         @endforeach

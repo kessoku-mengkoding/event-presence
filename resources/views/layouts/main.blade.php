@@ -23,7 +23,7 @@
 
   @include('partials.navbar')
 
-  <div class="w-full">
+  <div class="fixed w-[320px] max-w-[500px] left-[50%] translate-x-[-50%] rounded-[6px] overflow-hidden top-[20px]">
     @if (session('message'))
       <div class="bg-black py-3 text-center text-sm text-white">
         {{ session('message') }}

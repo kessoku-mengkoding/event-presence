@@ -1,4 +1,5 @@
-<nav class="container mx-auto my-4 flex justify-between px-4 sm:px-8 lg:px-12">
+<div class="border-b border-gray-800 shadow-md ">
+<nav class="container mx-auto my-4 flex bg-white justify-between px-4 sm:px-8 lg:px-12">
   <ul class="flex items-center gap-8">
     <li class="hover:underline"><a href="/">Home</a></li>
     <li class="hover:underline"><a href="/groups">Groups</a></li>
@@ -48,3 +49,5 @@
     </div>
   </ul>
 </nav>
+
+</div>
