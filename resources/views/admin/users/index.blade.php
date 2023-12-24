@@ -2,6 +2,7 @@
 
 @section('content')
   <div>
+    <h1 class="mb-4 text-3xl font-bold">Daftar User</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div class="bg-white pb-4 dark:bg-gray-900">
         <label for="table-search" class="sr-only">Search</label>
@@ -18,6 +19,7 @@
             placeholder="Search for items">
         </div>
       </div>
+      <div class="mt-2">Total User: {{ $users->count() }}</div>
       <table class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
         <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -33,7 +35,7 @@
             <th scope="col" class="px-6 py-3">
               Email
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-6 py-3 text-center">
               Terverifikasi
             </th>
             <th scope="col" class="px-6 py-3">
@@ -56,12 +58,22 @@
               <td class="px-6 py-4">
                 {{ $user->email }}
               </td>
-              <td class="px-6 py-4">
-                {{ $user->is_verified ? 'Ya' : 'Tidak' }}
+              <td class="px-6 py-4 text-center">
+                @if ($user->is_verified)
+                  <i class="fa-solid fa-circle-xmark text-green-500"></i>
+                @else
+                  <i class="fa-solid fa-circle-xmark text-red-500"></i>
+                @endif
               </td>
               <td class="flex items-center px-6 py-4">
-                {{-- <a href="#" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Edit</a> --}}
-                <a href="#" class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500">Remove</a>
+                <form action="/admin/users" method="POST">
+                  @csrf
+                  @method('DELETE')
+                  <input type="hidden" name="id" value="{{ $user->id }}">
+                  <button class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </form>
               </td>
             </tr>
           @endforeach

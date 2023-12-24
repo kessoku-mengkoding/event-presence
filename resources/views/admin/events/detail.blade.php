@@ -25,9 +25,12 @@
             placeholder="Search for items">
         </div>
         <div>
-          <button
-            class="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Tambah
-            Anggota</button>
+          <a href="{{ route('timetablesAdminView', $event->id) }}"
+            class="inline-block w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Lihat
+            Jadwal</a>
+          <a href="{{ route('addMembersView', $event->id) }}"
+            class="inline-block w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Tambah
+            Anggota</a>
         </div>
       </div>
       <div class="mt-2">Total Anggota: {{ $event->eventmembers->count() }}</div>
@@ -58,10 +61,10 @@
                 {{ $loop->iteration }}
               </td>
               <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
-                {{ optional($eventmember->user->resident)->full_name }}
+                {{ optional($eventmember->user->resident)->full_name ?? '-' }}
               </th>
               <td class="px-6 py-4">
-                {{ optional($eventmember->user->resident)->nik }}
+                {{ optional($eventmember->user->resident)->nik ?? '-' }}
               </td>
               <td class="px-6 py-4">
                 {{ $eventmember->user->email }}

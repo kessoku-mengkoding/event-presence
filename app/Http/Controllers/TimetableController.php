@@ -21,6 +21,12 @@ class TimetableController extends Controller
         ]);
     }
 
+    public function indexAdminView($id)
+    {
+        $timetables = Timetable::with('event')->where('event_id', $id)->get();
+        return view('admin.timetables.index', compact('timetables'));
+    }
+
     public function create(Request $request)
     {
         $request->validate([

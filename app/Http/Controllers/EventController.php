@@ -51,6 +51,12 @@ class EventController extends Controller
         ]);
     }
 
+    public function editView($id)
+    {
+        $event = Event::where('id', $id)->first();
+        return view('admin.events.edit', compact('event'));
+    }
+
     public function joinView()
     {
         return view('events.join', [
@@ -99,7 +105,17 @@ class EventController extends Controller
         $eventmember->fill($eventmember_data);
         $eventmember->save();
 
-        return redirect('/events')->with('message', 'Event created');
+        return redirect('/admin/events/' . $event->id . '/detail')->with('message', 'Kejadian berhasil dibuat');
+    }
+
+    public function update(Request $request)
+    {
+        Event::where('id', $request->id)->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return back()->with('message', 'Event berhasil diupdate');
     }
 
     public function join(Request $request)
@@ -170,6 +186,6 @@ class EventController extends Controller
     public function delete($id)
     {
         DB::delete('DELETE FROM events WHERE id = ?', [$id]);
-        return redirect('/events')->with('message', 'Event deleted');
+        return back()->with('message', 'Kegiatan berhasil dihapus');
     }
 }

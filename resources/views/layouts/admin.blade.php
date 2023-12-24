@@ -287,7 +287,7 @@
       </div>
     </aside>
 
-    <div class="ml-64 px-8 pt-20">
+    <div class="ml-64 px-8 pt-20 mb-12">
       @if (session('message'))
         <div id="toast-simple"
           class="space-x mb-5 flex w-full max-w-xs items-center gap-4 space-x-4 divide-x divide-gray-200 rounded-lg bg-white p-4 text-gray-500 shadow rtl:space-x-reverse rtl:divide-x-reverse dark:divide-gray-700 dark:bg-gray-800 dark:text-gray-400"

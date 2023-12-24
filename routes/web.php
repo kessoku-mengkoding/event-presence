@@ -70,19 +70,29 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'indexView']);
-        Route::get('/residents', [ResidentController::class, 'indexView']);
+        Route::get('/residents', [ResidentController::class, 'indexView'])->name('residentsAdminView');
         Route::get('/residents/create', [ResidentController::class, 'createView']);
+        Route::get('/residents/{id}/edit', [ResidentController::class, 'editView']);
+        Route::put('/residents/update', [ResidentController::class, 'update']);
+        Route::put('/events', [EventController::class, 'update']);
         Route::post('/residents/create', [ResidentController::class, 'create']);
+        Route::delete('/residents', [ResidentController::class, 'delete'])->name('deleteResident');
         Route::get('/users', [UserController::class, 'indexAdminView']);
         Route::get('/events/admin', [EventController::class, 'indexAdminView']);
         Route::get('/events/create', [EventController::class, 'createView']);
         Route::post('/events', [EventController::class, 'create']);
         Route::delete('/events/{id}', [EventController::class, 'delete']);
-        Route::get('/events/{id}/detail/admin', [EventController::class, 'indexAdminView']);
         Route::delete('/events/{event_id}/member/{member_id}', [EventMemberController::class, 'delete']);
         Route::put('/events/{event_id}/member/{member_id}/role', [EventMemberController::class, '']);
         Route::post('/events/{id}/invite', [InvitationController::class, 'create']);
         Route::post('/timetables', [TimetableController::class, 'create']);
         Route::delete('/timetables/{id}', [TimetableController::class, 'delete']);
+
+        Route::get('/admin/events/{id}/edit', [EventController::class, 'editView']);
+        Route::get('/admin/events/{id}/detail', [EventController::class, 'detailView']);
+        Route::get('/admin/events/{event_id}/members/add', [EventMemberController::class, 'addMembersView'])->name('addMembersView');
+        Route::post('/admin/events/member/add', [EventMemberController::class, 'addMembers'])->name('addMembers');
+        Route::delete('/admin/users', [UserController::class, 'deleteFromAdmin']);
+        Route::get('/admin/timetables/{id}', [TimetableController::class, 'indexAdminView'])->name('timetablesAdminView');
     });
 });

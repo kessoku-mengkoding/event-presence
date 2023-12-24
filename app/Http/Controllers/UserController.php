@@ -151,4 +151,11 @@ class UserController extends Controller
 
         return redirect('/sign-in');
     }
+
+    public function deleteFromAdmin(Request $request)
+    {
+        User::destroy($request->id);
+
+        return back()->with('message', 'Delete user success');
+    }
 }

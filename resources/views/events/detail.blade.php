@@ -58,10 +58,10 @@
                 {{ $loop->iteration }}
               </td>
               <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
-                {{ optional($eventmember->user->resident)->full_name }}
+                {{ optional($eventmember->user->resident)->full_name ?? '-' }}
               </th>
               <td class="px-6 py-4">
-                {{ optional($eventmember->user->resident)->nik }}
+                {{ optional($eventmember->user->resident)->nik ?? '-' }}
               </td>
               <td class="px-6 py-4">
                 {{ $eventmember->user->email }}

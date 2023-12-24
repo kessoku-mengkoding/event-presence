@@ -2,6 +2,7 @@
 
 @section('content')
   <div>
+    <h1 class="mb-4 text-3xl font-bold">Daftar Kegiatan</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div class="bg-white pb-4 dark:bg-gray-900">
         <label for="table-search" class="sr-only">Search</label>
@@ -25,9 +26,9 @@
               No
             </th>
             <th scope="col" class="px-6 py-3">
-              Nama Event
+              Nama Kegiatan
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-6 py-3 text-center">
               Jumlah Member
             </th>
             <th scope="col" class="px-6 py-3">
@@ -41,15 +42,31 @@
               <td class="w-4 p-4">
                 {{ $loop->iteration }}
               </td>
-              <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
-                {{ $event->name }}
+              <th scope="row" class="flex whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
+                <div class="my-auto h-5 w-5 overflow-hidden rounded-full border">
+                  <img src="{{ $event->image_path }}">
+                </div>
+                <div class="ml-2">{{ $event->name }}</div>
               </th>
-              <td class="px-6 py-4">
+              <td class="px-6 py-4 text-center">
                 {{ $event->eventmembers->count() }}
               </td>
               <td class="flex items-center px-6 py-4">
-                <a href="/events/{{ $event->id }}/detail" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Detail</a>
-                <a href="#" class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500">Remove</a>
+                <a href="/events/{{ $event->id }}/detail"
+                  class="mr-4 font-medium text-blue-600 hover:underline dark:text-blue-500">
+                  <i class="fa-solid fa-circle-info text-black"></i>
+                </a>
+                <a href="/admin/events/{{ $event->id }}/edit"
+                  class="font-medium text-blue-600 hover:underline dark:text-blue-500">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <form action="/events/{{ $event->id }}" method="POST">
+                  @csrf
+                  @method('DELETE')
+                  <button href="#" class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </form>
               </td>
             </tr>
           @endforeach
