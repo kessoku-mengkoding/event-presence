@@ -44,9 +44,9 @@
                   src="{{ $member->event->image_path ? $member->event->image_path : 'https://images.unsplash.com/photo-1596367407372-96cb88503db6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80' }}"
                   alt="">
               </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <h1 class="text-2xl font-semibold">{{ $member->event->name }}</h1>
+              <div class="flex items-center justify-between ">
+                <div class="">
+                  <h1 class="max-w-[160px] xs:max-w-[600px]  text-xl truncate text-ellipsis lg:text-2xl font-semibold">{{ $member->event->name }}</h1>
                   <div>
                     <i class="fa-regular fa-user"></i>
                     <span>{{ sizeof($member->event->eventmembers) }}</span>

@@ -22,13 +22,13 @@ $currentDateTime = $now->format('Y-m-d H:i:s');
   @elseif($currentDateTime < $timetable->start)
     <div class="w-full">
       <dotlottie-player class="mx-auto my-24"
-        src="https://lottie.host/d272a983-912f-43b5-b5f0-e76bca19396e/XyK5DRHtD2.json" background="transparent"
+        src="https://lottie.host/4d681397-f6ed-4845-934a-aa9a3aec0562/nY8SxIMuxc.json" background="transparent"
         speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
       <h1 class="text-gradient-pink-blue mt-8 text-center text-2xl font-bold">Not yet</h1>
     </div>
   @else
     <div class="w-full">
-      <dotlottie-player class="mx-auto" src="https://lottie.host/26c1a6fe-0609-4968-993a-38dc75e0a767/p9q2jJInhb.json"
+      <dotlottie-player class="mx-auto" src="https://lottie.host/c5bf6c78-5a34-4011-8644-7e7306663d97/pDmDOdUo3A.json"
         background="transparent" speed="1" style="width: 500px; height: 500px;" loop autoplay></dotlottie-player>
       <h1 class="text-gradient-pink-blue mt-8 text-center text-2xl font-bold">You missed it</h1>
     </div>

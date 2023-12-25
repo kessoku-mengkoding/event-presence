@@ -84,8 +84,8 @@ function formatDateTime($inputDateTime)
       </div>
     </div> --}}
 
-    <div class="w-8/12">
-      <div class="mt-12 flex justify-center gap-2 md:gap-4">
+    <div class="w-[85vh] md:w-8/12">
+      <div class="mt-12 flex justify-center gap-1 md:gap-4 text-xs md:text-base">
         <a href="/"
           class="btn-sm-no-color {{ !$type ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">All</a>
         <a href="/?type=ongoing"
@@ -102,7 +102,7 @@ function formatDateTime($inputDateTime)
             @if (($type ? $timetable->status == $type : true) && !$timetable->is_presence)
               <div class="event-card">
                 <a href="/timetables/{{ $timetable->id }}/scan-me"
-                  class="relative flex w-full items-center gap-6 overflow-clip rounded-lg border bg-white px-6 py-5 shadow-md">
+                  class="relative flex w-full items-center gap-6 overflow-clip rounded-lg border bg-white px-6 py-10 md:py-5 shadow-md">
                   <div class="flex h-16 w-16 overflow-clip rounded-full bg-black">
                     <img class="object-fill"
                       src="{{ $eventmembers->event->image_path ? $eventmembers->event->image_path : 'https://images.unsplash.com/photo-1596367407372-96cb88503db6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80' }}"
