@@ -38,7 +38,7 @@ class PresenceController extends Controller
         $presences = Presence::with(['user.resident', 'timetable', 'eventmember.event'])
             ->orderBy('created_at', 'desc')
             ->get();
-
+            
         return view('admin.presences.history', [
             'title' => 'Presences',
             'presences' => $presences

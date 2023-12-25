@@ -13,18 +13,18 @@
           <i class="fa-solid fa-clock-rotate-left fa-lg"></i>
         </a>
       </li>
-      <li>
+      {{-- <li>
         <a href="/invitations" class="invitations-btn">
           <i class="fa-solid fa-paper-plane fa-lg"></i>
           <i class="fa-regular fa-paper-plane fa-lg"></i>
         </a>
-      </li>
-      <li>
+      </li> --}}
+      {{-- <li>
         <a href="/notifications" class="notification-btn">
           <i class="fa-solid fa-bell fa-lg"></i>
           <i class="fa-regular fa-bell fa-lg"></i>
         </a>
-      </li>
+      </li> --}}
 
       <div class="dropdown relative inline-block">
         <div class="mt-1 inline-flex h-8 w-8 items-center overflow-clip rounded-full bg-gray-300">

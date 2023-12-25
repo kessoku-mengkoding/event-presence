@@ -13,10 +13,10 @@
           <th scope="col" class="px-6 py-3">
             Nama Lengkap
           </th>
-          <th scope="col" class="px-6 py-3">
+          <th scope="col" class="px-6 py-3 text-center">
             Data Penduduk
           </th>
-          <th scope="col" class="px-6 py-3">
+          <th scope="col" class="px-6 py-3 text-center">
             Data User
           </th>
           <th scope="col" class="px-6 py-3">
@@ -45,55 +45,70 @@
             <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
               {{ optional($presence->user->resident)->full_name ?? '-' }}
             </th>
+
+            <td class="px-6 py-4 text-center">
+              <i class="fa-solid fa-circle-info cursor-pointer"
+                data-popover-target="popover-default{{ $presence->id }}"></i>
+              <div data-popover id="popover-default{{ $presence->id }}" role="tooltip"
+                class="max-w-64 invisible absolute z-10 inline-block rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                <div
+                  class="rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700">
+                  <h3 class="font-semibold text-gray-900 dark:text-white">Data Penduduk</h3>
+                </div>
+                <div class="px-6 py-3">
+                  <ul class="text-left">
+                    @if ($presence->user->resident)
+                      <li>Nama Lengkap: {{ optional($presence->user->resident)->full_name }}</li>
+                      <li>NIK: {{ optional($presence->user->resident)->nik }}</li>
+                      <li>KK: {{ optional($presence->user->resident)->kk }}</li>
+                      <li>Alamat: {{ optional($presence->user->resident)->address }}</li>
+                    @else
+                      <li>Tidak terdaftar dalam penduduk</li>
+                    @endif
+                  </ul>
+                </div>
+                <div data-popper-arrow></div>
+              </div>
+            </td>
+
+            <td class="px-6 py-4 text-center">
+              <i class="fa-solid fa-circle-info cursor-pointer"
+                data-popover-target="2popover-default{{ $presence->id }}"></i>
+              <div data-popover id="2popover-default{{ $presence->id }}" role="tooltip"
+                class="max-w-64 invisible absolute z-10 inline-block rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                <div
+                  class="rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700">
+                  <h3 class="font-semibold text-gray-900 dark:text-white">Data User</h3>
+                </div>
+                <div class="px-6 py-3">
+                  <ul class="text-left">
+                    <li>Username: {{ $presence->user->username }}</li>
+                    <li>Email: {{ $presence->user->email }}</li>
+                  </ul>
+                </div>
+                <div data-popper-arrow></div>
+              </div>
+            </td>
+
             <td class="px-6 py-4">
-              Data Penduduk
+              {{ $presence->eventmember->event->name }}
             </td>
             <td class="px-6 py-4">
-                Data User
+              {{ $presence->timetable->title }}
             </td>
             <td class="px-6 py-4">
-                {{ $presence->eventmember->event->name }}
+              {{ $presence->created_at }}
             </td>
             <td class="px-6 py-4">
-                {{ $presence->timetable->title }}
-            </td>
-            <td class="px-6 py-4">
-                {{ $presence->created_at }}
-            </td>
-            <td class="px-6 py-4">
-                {{ $presence->status == 'on time' ? 'Tepat Waktu' : 'Terlambat' }}
+              {{ $presence->status == 'on time' ? 'Tepat Waktu' : 'Terlambat' }}
             </td>
             <td class="px-6 py-4 text-center">
-                @if ($presence->is_valid)
-                    <i class="fa-solid fa-circle-check text-green-500"></i>
-                @else
-                    <i class="fa-solid fa-circle-xmark text-red-500"></i>
-                @endif
-            </td>
-            {{-- <td class="px-6 py-4 text-center">
-              @if ($resident->user_id)
-                <i class="fa-solid fa-circle-check cursor-pointer"
-                  data-popover-target="popover-default{{ $resident->id }}"></i>
-
-                <div data-popover id="popover-default{{ $resident->id }}" role="tooltip"
-                  class="max-w-64 invisible absolute z-10 inline-block rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                  <div
-                    class="rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white">Data User</h3>
-                  </div>
-                  <div class="px-6 py-3">
-                    <ul class="text-left">
-                      <li>Username: {{ $resident->user->username }}</li>
-                      <li>Email: {{ $resident->user->email }}</li>
-                      <li>Role: {{ $resident->user->is_admin ? 'Admin' : 'User' }}</li>
-                    </ul>
-                  </div>
-                  <div data-popper-arrow></div>
-                </div>
+              @if ($presence->is_valid)
+                <i class="fa-solid fa-circle-check text-green-500"></i>
               @else
                 <i class="fa-solid fa-circle-xmark text-red-500"></i>
               @endif
-            </td> --}}
+            </td>
           </tr>
         @endforeach
         @if ($presences->count() == 0)
