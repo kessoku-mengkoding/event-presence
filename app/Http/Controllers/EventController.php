@@ -27,8 +27,19 @@ class EventController extends Controller
 
     public function indexAdminView()
     {
-        $events = Event::with('eventmembers')->get();
-        return view('admin.events.index', compact('events'));
+        if (request()->search) {
+            $events = Event::with('eventmembers')->where('name', 'like', '%' . request()->search . '%')
+                ->orWhere('description', 'like', '%' . request()->search . '%')
+                ->get();
+        } else {
+            $events = Event::with('eventmembers')->get();
+        }
+
+        return view('admin.events.index', [
+            'events' => $events,
+            'is_search' => request()->search ? true : false,
+            'search_value' => request()->search,
+        ]);
     }
 
     public function createView()
@@ -40,14 +51,24 @@ class EventController extends Controller
 
     public function detailView($id)
     {
-        $event = Event::with('eventmembers.user.resident')->find($id);
+        if(request()->search) {
+            $event = Event::with('eventmembers.user.resident')->where('id', $id)
+                ->where('name', 'like', '%' . request()->search . '%')
+                ->orWhere('description', 'like', '%' . request()->search . '%')
+                ->first();
+        } else {
+            $event = Event::with('eventmembers.user.resident')->find($id);
+        }
+
         $timetables = Timetable::where('event_id', $id)->get();
 
         $view = Auth::user()->is_admin ? 'admin.events.detail' : 'events.detail';
         return view($view, [
             'title' => 'Event Detail',
             'event' => $event,
-            'timetables' => $timetables
+            'timetables' => $timetables,
+            'is_search' => request()->search ? true : false,
+            'search_value' => request()->search,
         ]);
     }
 

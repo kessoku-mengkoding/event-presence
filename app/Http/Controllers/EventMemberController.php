@@ -44,10 +44,10 @@ class EventMemberController extends Controller
     {
         DB::table('eventmembers')
             ->where('event_id', $event_id)
-            ->where('user_id', $member_id)
+            ->where('id', $member_id)
             ->delete();
 
-        return redirect('/events/' . $event_id . '/detail');
+        return back()->with('message', 'Success deleting member');
     }
 
     public function changeRole($event_id, $member_id, Request $request)

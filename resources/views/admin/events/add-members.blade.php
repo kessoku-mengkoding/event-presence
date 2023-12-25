@@ -1,17 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
-  <a href="/events/admin"
-    class="mb-4 inline-block rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Kembali</a>
-  <h1 class="text-3xl font-bold">Tambah Member Pada Kegiatan {{ $event->name }} </h1>
+  <h1 class="text-3xl font-bold">Tambah member pada kegiatan {{ $event->name }} </h1>
   <div class="mt-8">
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto sm:rounded-lg">
       <form action="{{ route('addMembers') }}" method="POST">
         @csrf
         <input type="text" name="event_id" value="{{ $event->id }}" hidden>
-        <button
-          class="mb-4 inline-block w-full justify-end rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Submit</button>
-        <table class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+        <table class="w-full text-left text-sm text-gray-500 shadow-md rtl:text-right dark:text-gray-400">
           <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" class="p-4">
@@ -56,8 +52,17 @@
                 </td>
               </tr>
             @endforeach
+            @if ($users->count() == 0)
+              <tr>
+                <td colspan="7" class="p-4 text-center"><i
+                    class="fa-solid fa-triangle-exclamation mr-2 text-yellow-200"></i>Tidak ada user yang bisa ditambahkan
+                </td>
+              </tr>
+            @endif
           </tbody>
         </table>
+        <button
+          class="mt-6 mb-2 me-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800">Tambahkan</button>
       </form>
     </div>
   </div>

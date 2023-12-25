@@ -14,8 +14,20 @@ class UserController extends Controller
 {
     public function indexAdminView()
     {
-        $users = User::with('resident')->get();
-        return view('admin.users.index', compact('users'));
+        if (request()->search) {
+            $users = User::with('resident')->where('name', 'like', '%' . request()->search . '%')
+                ->orWhere('username', 'like', '%' . request()->search . '%')
+                ->orWhere('email', 'like', '%' . request()->search . '%')
+                ->get();
+        } else {
+            $users = User::with('resident')->get();
+        }
+
+        return view('admin.users.index', [
+            'users' => $users,
+            'is_search' => request()->search ? true : false,
+            'search_value' => request()->search,
+        ]);
     }
 
     public function homeView(Request $request)
@@ -74,6 +86,14 @@ class UserController extends Controller
             'timetables' => $timetables,
             'time' => $currentDateTime,
             'recent_timetables' => $recent_timetables
+        ]);
+    }
+
+    public function editFromAdminView($id)
+    {
+        $user = User::with('resident')->find($id);
+        return view('admin.users.edit', [
+            'user' => $user,
         ]);
     }
 
@@ -157,5 +177,19 @@ class UserController extends Controller
         User::destroy($request->id);
 
         return back()->with('message', 'Delete user success');
+    }
+
+    public function editFromAdmin(Request $request)
+    {
+        if($request->new_password) {
+            $request->merge([
+                'password' => bcrypt($request->new_password)
+            ]);
+        }
+
+        $user = User::find($request->id);
+        $user->update($request->all());
+
+        return back()->with('message', 'Update user success');
     }
 }

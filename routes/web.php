@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/users/{id}/profile-picture', [ImageController::class, 'delete']);
 
     Route::get('/events', [EventController::class, 'indexView']);
-    Route::get('/events/{id}/detail', [EventController::class, 'detailView']);
+    Route::get('/events/{id}/detail', [EventController::class, 'detailView'])->name('eventDetailView');
     Route::get('/events/join', [EventController::class, 'joinView']);
     Route::post('/events/join', [EventController::class, 'join']);
     Route::get('/events/join/redirect', [EventController::class, 'joinRedirect']);
@@ -77,12 +77,12 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/events', [EventController::class, 'update']);
         Route::post('/residents/create', [ResidentController::class, 'create']);
         Route::delete('/residents', [ResidentController::class, 'delete'])->name('deleteResident');
-        Route::get('/users', [UserController::class, 'indexAdminView']);
-        Route::get('/events/admin', [EventController::class, 'indexAdminView']);
+        Route::get('/users', [UserController::class, 'indexAdminView'])->name('usersAdminView');
+        Route::get('/events/admin', [EventController::class, 'indexAdminView'])->name('eventsAdminView');
         Route::get('/events/create', [EventController::class, 'createView']);
         Route::post('/events', [EventController::class, 'create']);
         Route::delete('/events/{id}', [EventController::class, 'delete']);
-        Route::delete('/events/{event_id}/member/{member_id}', [EventMemberController::class, 'delete']);
+        Route::delete('/events/{event_id}/member/{member_id}', [EventMemberController::class, 'delete'])->name('deleteMember');
         Route::put('/events/{event_id}/member/{member_id}/role', [EventMemberController::class, '']);
         Route::post('/events/{id}/invite', [InvitationController::class, 'create']);
         Route::post('/timetables', [TimetableController::class, 'create']);
@@ -94,5 +94,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/events/member/add', [EventMemberController::class, 'addMembers'])->name('addMembers');
         Route::delete('/admin/users', [UserController::class, 'deleteFromAdmin']);
         Route::get('/admin/timetables/{id}', [TimetableController::class, 'indexAdminView'])->name('timetablesAdminView');
+        Route::get('/admin/users/{id}/edit', [UserController::class, 'editFromAdminView'])->name('editUserFromAdminView');
+        Route::put('/admin/users/edit', [UserController::class, 'editFromAdmin'])->name('editUserFromAdmin');
     });
 });

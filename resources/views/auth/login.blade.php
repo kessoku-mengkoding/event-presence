@@ -31,8 +31,7 @@
   <div class="flex h-screen items-center">
     <div class="container mx-auto max-w-md px-4">
       <h1 class="text-gradient-mktg mb-8 text-3xl font-bold">Sign in to Presenced</h1>
-      <button class="flex justify-center items-center gap-2 w-full rounded-full border border-slate-300 py-3 text-center text-base font-semibold">
-        {{-- <i class="fa-brands fa-google mr-1"></i> --}}
+      {{-- <button class="flex justify-center items-center gap-2 w-full rounded-full border border-slate-300 py-3 text-center text-base font-semibold">
         <div class="w-6">
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 48 48">
             <path fill="#FFC107"
@@ -50,12 +49,12 @@
           </svg>
         </div>
         <span>Sign In with Google</span>
-      </button>
-      <div class="inline-flex w-full items-center justify-center">
+      </button> --}}
+      {{-- <div class="inline-flex w-full items-center justify-center">
         <hr class="my-8 h-px w-full border-0 bg-slate-300">
         <span class="absolute left-1/2 -translate-x-1/2 bg-white px-3 text-sm text-black/50">
           or sign in with email</span>
-      </div>
+      </div> --}}
       <form action="/sign-in" method="POST"> @csrf
         <div class="flex flex-col">
           <label for="email" class="font-semibold">Email</label>
