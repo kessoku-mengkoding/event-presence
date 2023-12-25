@@ -2,7 +2,28 @@
 
 @section('content')
   <h1 class="text-3xl font-bold">Tambah member pada kegiatan {{ $event->name }} </h1>
-  <div class="mt-8">
+  <div class="mt-6">
+
+    <div class="mx-auto w-36 cursor-pointer text-center" data-popover-target="popover-right" data-popover-placement="right"
+      type="button">
+      <img src="{{ $event->qr_code_path }}" alt="QR Code">
+    </div>
+    <div data-popover id="popover-right" role="tooltip"
+      class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+      <div class="rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700">
+        <h3 class="font-semibold text-gray-900 dark:text-white">Deskripsi</h3>
+      </div>
+      <div class="px-3 py-2">
+        <p>Bagikan QR Code ini kepada penduduk yang telah mendaftar</p>
+      </div>
+      <div data-popper-arrow></div>
+    </div>
+
+    <div class="relative inline-flex w-full items-center justify-center mb-4">
+      <hr class="my-8 h-px w-full border-0 bg-slate-300">
+      <span class="absolute left-1/2 -translate-x-1/2 bg-white px-3 text-sm text-black/50">atau tambahkan lewat tabel imi</span>
+    </div>
+
     <div class="relative overflow-x-auto sm:rounded-lg">
       <form action="{{ route('addMembers') }}" method="POST">
         @csrf
@@ -62,7 +83,7 @@
           </tbody>
         </table>
         <button
-          class="mt-6 mb-2 me-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800">Tambahkan</button>
+          class="mb-2 me-2 mt-6 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800">Tambahkan</button>
       </form>
     </div>
   </div>

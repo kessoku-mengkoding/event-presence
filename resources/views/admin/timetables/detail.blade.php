@@ -5,20 +5,28 @@
     <i class="fa-solid fa-calendar-days fa-2xl mr-1.5"></i>
     <h1 class="text-3xl font-bold">Jadwal {{ $timetable->title }}</h1>
     @if ($timetable_status == 'Upcoming')
-      <div class="bg-yellow-500 text-white px-2 py-1 rounded-2xl font-semibold">Upcoming</div>
+      <div class="rounded-2xl bg-yellow-500 px-2 py-1 font-semibold text-white">Upcoming</div>
     @elseif($timetable_status == 'Ongoing')
-      <div class="bg-blue-500 text-white px-2 py-1 rounded-2xl font-semibold">Ongoing</div>
+      <div class="rounded-2xl bg-blue-500 px-2 py-1 font-semibold text-white">Ongoing</div>
     @else
-      <div class="bg-red-500 text-white px-2 py-1 rounded-2xl font-semibold">Ended</div>
+      <div class="rounded-2xl bg-red-500 px-2 py-1 font-semibold text-white">Ended</div>
     @endif
   </div>
-  <h1 class="text-xl text-center font-bold">Kegiatan {{ $event->name }}</h1>
+  <h1 class="text-center text-xl font-bold">Kegiatan {{ $event->name }}</h1>
 
-  <div class="my-8">
-    {{-- <a href="{{ route('createTimetableFromAdminView', $event->id) }}"
-        class="mb-2 me-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
-        Buat Jadwal
-      </a> --}}
+  <div class="mx-auto my-8 w-36 cursor-pointer text-center" data-popover-target="popover-right"
+    data-popover-placement="right" type="button">
+    <img src="{{ $event->qr_code_path }}" alt="QR Code">
+  </div>
+  <div data-popover id="popover-right" role="tooltip"
+    class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+    <div class="rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700">
+      <h3 class="font-semibold text-gray-900 dark:text-white">Deskripsi</h3>
+    </div>
+    <div class="px-3 py-2">
+      <p>QR Code ini dapat digunakan untuk absensi jadwal ini</p>
+    </div>
+    <div data-popper-arrow></div>
   </div>
 
   <div class="text-center">
@@ -65,7 +73,7 @@
     </div>
   </div>
 
-  <h2 class="text-left">Tabel Absensi</h2>
+  <h2 class="text-left font-bold">Tabel Absensi</h2>
   <table class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
     <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
       <tr>
@@ -141,7 +149,7 @@
   </table>
 
 
-  <h2 class="mt-8 text-left">Tabel Member (Penduduk) Belum Absen</h2>
+  <h2 class="mt-8 text-left font-bold">Tabel Member (Penduduk) Belum Absen</h2>
   <table class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
     <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
       <tr>
@@ -166,10 +174,9 @@
       @endforeach
       @if ($eventmembers_not_presence->count() == 0)
         <tr>
-          <td colspan="7" class="p-4 text-center"><i
-              class="fa-solid fa-triangle-exclamation mr-2 text-yellow-200"></i>
-             Tidak ada member yang belum absen
-            </td>
+          <td colspan="7" class="p-4 text-center"><i class="fa-solid fa-triangle-exclamation mr-2 text-yellow-200"></i>
+            Tidak ada member yang belum absen
+          </td>
         </tr>
       @endif
     </tbody>
