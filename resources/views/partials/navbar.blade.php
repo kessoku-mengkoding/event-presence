@@ -1,12 +1,25 @@
 <div class="border-b border-gray-800 bg-white shadow-md">
   <nav class="container mx-auto my-4 flex justify-between px-4 sm:px-8 lg:px-12">
-    <ul class="flex items-center gap-8">
+    <ul class="hidden sm:flex items-center gap-8"> <!-- Hide on small screens -->
       <li class="hover:underline"><a href="/">Home</a></li>
       <li class="hover:underline"><a href="/events">Events</a></li>
       <li class="hover:underline"><a href="#">Statistic</a></li>
     </ul>
+
+    <!-- Hamburger Menu -->
+    <div class="flex sm:hidden items-center">
+      <button id="menu-toggle" class="text-gray-800 focus:outline-none">
+        <svg class="h-6 w-6" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M4 6h16M4 12h16m-7 6h7"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
     {{-- <div class="flex items-center">Logo</div> --}}
-    <ul class="flex items-center gap-6">
+    <ul id="responsive-menu" class="hidden sm:flex items-center gap-6">
       <li>
         <a href="/presences/history">
           <i class="fa-solid fa-clock-rotate-left fa-lg"></i>
@@ -50,3 +63,13 @@
     </ul>
   </nav>
 </div>
+
+<script>
+  // JavaScript to toggle menu visibility
+  const menuToggle = document.getElementById('menu-toggle');
+  const responsiveMenu = document.getElementById('responsive-menu');
+
+  menuToggle.addEventListener('click', () => {
+    responsiveMenu.classList.toggle('hidden');
+  });
+</script>

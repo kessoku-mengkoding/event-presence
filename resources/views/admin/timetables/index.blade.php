@@ -84,7 +84,10 @@
                 Sedang Berlangsung
               @endif
             </td>
-            <td class="flex items-center px-6 py-4 justify-center m-auto">
+            <td class="m-auto flex items-center justify-center px-6 py-4">
+              <a href="{{ route('detailTimetableAdminView', $timetable->id) }}" class="font-medium hover:underline mr-2">
+                <i class="fa-solid fa-circle-info"></i>
+              </a>
               <a href="{{ route('editTimetableView', $timetable->id) }}"
                 class="font-medium text-blue-600 hover:underline dark:text-blue-500">
                 <i class="fa-solid fa-pen-to-square"></i>

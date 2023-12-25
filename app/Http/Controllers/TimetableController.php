@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Presence;
 use App\Models\Timetable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,19 @@ class TimetableController extends Controller
         return view('admin.timetables.index', [
             'timetables' => $timetables,
             'event' => $event
+        ]);
+    }
+
+    public function detailAdminView($id)
+    {
+        $timetable = Timetable::where('id', $id)->first();
+        $event = Event::where('id', $timetable->event_id)->first();
+        $presences = Presence::with('user.resident')->where('timetable_id', $id)->get();
+
+        return view('admin.timetables.detail', [
+            'timetable' => $timetable,
+            'event' => $event,
+            'presences' => $presences,
         ]);
     }
 

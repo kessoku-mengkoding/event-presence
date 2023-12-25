@@ -99,5 +99,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/timetables/{id}/edit', [TimetableController::class, 'editView'])->name('editTimetableView');
         Route::put('/admin/users/edit', [UserController::class, 'editFromAdmin'])->name('editUserFromAdmin');
         Route::get('/admin/event/{event_id}/timetables', [TimetableController::class, 'createFromAdminView'])->name('createTimetableFromAdminView');
+        Route::get('/admin/timetables/{id}/detail', [TimetableController::class, 'detailAdminView'])->name('detailTimetableAdminView');
     });
 });

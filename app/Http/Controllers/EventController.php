@@ -196,7 +196,7 @@ class EventController extends Controller
 
         $url = ImageController::uploadToExternalQRService($request);
 
-        $response = Http::post(env('QR_SERVICE_URL') . '/read', ['url' => $url]);
+        $response = Http::post(env('QR_SERVICE_URL') . '/read', ['string' => $url]);
         $redirect_url = $response->body();
 
         return strpos($redirect_url, '/events/join/redirect?event_id=') !== false
