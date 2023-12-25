@@ -24,13 +24,24 @@ class PresenceController extends Controller
 
     public function historyView()
     {
-        $user_presences = User::with(['presences.timetable', 'presences.eventmember.event'])
+        $presences = User::with(['presences.timetable', 'presences.eventmember.event'])
             ->where('id', Auth::id())
             ->first();
 
         return view('presences.history', [
-            'user' => $user_presences,
-            'title' => 'History'
+            'presences' => $presences,
+        ]);
+    }
+
+    public function historyAdminView()
+    {
+        $presences = Presence::with(['user.resident', 'timetable', 'eventmember.event'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.presences.history', [
+            'title' => 'Presences',
+            'presences' => $presences
         ]);
     }
 
@@ -70,7 +81,7 @@ class PresenceController extends Controller
         // !! validate presence. time, location, etc
         // validate location
         $is_valid = true;
-        $distance = $this->haversineGreatCircleDistance($timetable->latitude, $timetable->longitude, $request->lat, $request->long);
+        $distance = $this->haversineGreatCircleDistance($timetable->latitude, $timetable->longitude, $request->lat, $request->long) / 10;
         if ($distance > $timetable->radius_meter) {
             $is_valid = false;
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\EventMember;
 use App\Models\Presence;
 use App\Models\Timetable;
 use Illuminate\Http\Request;
@@ -37,11 +38,12 @@ class TimetableController extends Controller
     {
         $timetables = Timetable::where('event_id', $id)->orderBy('created_at', 'desc')->get();
         $event = Event::where('id', $id)->first();
-        // dd($timetables->toArray());
+        $now = HelperController::getDatetimeNow();
 
         return view('admin.timetables.index', [
             'timetables' => $timetables,
-            'event' => $event
+            'event' => $event,
+            'now' => $now,
         ]);
     }
 
@@ -49,12 +51,50 @@ class TimetableController extends Controller
     {
         $timetable = Timetable::where('id', $id)->first();
         $event = Event::where('id', $timetable->event_id)->first();
+        $eventmembers = EventMember::with('user.resident')->where('event_id', $timetable->event_id)->get();
         $presences = Presence::with('user.resident')->where('timetable_id', $id)->get();
+
+        // penduduk yang belum absen
+        $eventmembers_not_presence = EventMember::with('user.resident')->where('event_id', $timetable->event_id)->get();
+        foreach ($eventmembers_not_presence as $key => $eventmember) {
+            foreach ($presences as $presence) {
+                if ($eventmember->user_id == $presence->user_id) {
+                    unset($eventmembers_not_presence[$key]);
+                }
+            }
+        }
+
+        $presence_controller = new PresenceController();
+        $presences_location_distance = [];
+
+        $presences_late_duration = [];
+
+        foreach ($presences as $presence) {
+            $presences_late_duration[] = $presence->created_at->diffInMinutes($timetable->end);
+            $presences_location_distance[] = round($presence_controller->haversineGreatCircleDistance(
+                $presence->latitude,
+                $presence->longitude,
+                $timetable->latitude,
+                $timetable->longitude
+            ), 1) / 10;
+        }
+
+        $timetable_status = 'Ended';
+        if ($timetable->start > HelperController::getDatetimeNow()) {
+            $timetable_status = 'Upcoming';
+        } else if ($timetable->start < HelperController::getDatetimeNow() && $timetable->end > HelperController::getDatetimeNow()) {
+            $timetable_status = 'Ongoing';
+        }
 
         return view('admin.timetables.detail', [
             'timetable' => $timetable,
+            'timetable_status' => $timetable_status,
             'event' => $event,
+            'eventmembers' => $eventmembers,
+            'eventmembers_not_presence' => $eventmembers_not_presence,
             'presences' => $presences,
+            'presences_late_duration' => $presences_late_duration,
+            'presences_location_distance' => $presences_location_distance
         ]);
     }
 

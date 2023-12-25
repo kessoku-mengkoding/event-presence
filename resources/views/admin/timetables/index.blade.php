@@ -76,9 +76,9 @@
               {{ $timetable->end }}
             </td>
             <td class="px-6 py-4">
-              @if ($timetable->start > now())
+              @if ($timetable->start > $now)
                 Belum Dimulai
-              @elseif($timetable->end < now())
+              @elseif($timetable->end < $now)
                 Selesai
               @else
                 Sedang Berlangsung

@@ -79,13 +79,20 @@ class UserController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // count all timetables
+        $all_timetables_count = 0;
+        foreach ($timetables->eventmembers as $member) {
+            $all_timetables_count += count($member->event->timetables);
+        }
+
         return view('home', [
             'type' => $type,
             'user' => $user,
             'title' => 'Home',
             'timetables' => $timetables,
             'time' => $currentDateTime,
-            'recent_timetables' => $recent_timetables
+            'recent_timetables' => $recent_timetables,
+            'all_timetables_count' => $all_timetables_count,
         ]);
     }
 

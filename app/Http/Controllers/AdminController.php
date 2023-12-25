@@ -8,8 +8,10 @@ class AdminController extends Controller
 {
     public function indexView()
     {
+        $now = HelperController::getDatetimeNow();
         return view('admin.dashboard', [
-            'title' => 'Admin Dashboard'
+            'title' => 'Admin Dashboard',
+            'now' => $now
         ]);
     }
 }
