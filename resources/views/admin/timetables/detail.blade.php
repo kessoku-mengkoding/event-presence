@@ -43,8 +43,16 @@
     </p>
   </div>
 
-  {{-- total --}}
-  <div class="my-8 text-left">
+  <div class="mx-auto my-12 flex justify-center">
+    <div class=" flex w-64 text-center">
+      <canvas id="myChart"></canvas>
+    </div>
+    <div class=" flex w-64 text-center">
+      <canvas id="myChart2"></canvas>
+    </div>
+  </div>
+
+  {{-- <div class="my-8 text-left">
     <div class="mt-2">
       <i class="fa-solid fa-file"></i>
       <span>Total absensi:</span>
@@ -60,7 +68,6 @@
       <span>Total absensi terlambat:</span>
       <span class="font-bold"> {{ $presences->where('status', 'late')->count() }} </span>
     </div>
-    {{-- belum absen --}}
     <div class="mt-2">
       <i class="fa-solid fa-file"></i>
       <span>Total penduduk belum absen:</span>
@@ -71,7 +78,7 @@
       <span>Total absensi tidak valid:</span>
       <span class="font-bold"> {{ $presences->where('is_valid', false)->count() }} </span>
     </div>
-  </div>
+  </div> --}}
 
   <h2 class="text-left font-bold">Tabel Absensi</h2>
   <table class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
@@ -182,4 +189,48 @@
     </tbody>
   </table>
   </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Belum Absen', 'Sudah Absen'],
+        datasets: [{
+          data: [{{ $eventmembers->count() - $presences->count() }}, {{ $presences->count() }}],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+          ],
+          borderWidth: 1
+        }]
+      },
+    });
+
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var myPieChart = new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: ['Absen Invalid', 'Absen Valid'],
+        datasets: [{
+          data: [{{ $presences->where('is_valid', false)->count() }}, {{ $presences->where('is_valid', true)->count() }}],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+          ],
+          borderWidth: 1
+        }]
+      },
+    });
+  </script>
 @endsection
