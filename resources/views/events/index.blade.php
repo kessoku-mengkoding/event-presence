@@ -37,7 +37,7 @@
             @endif
           </div>
           @foreach ($eventmembers as $member)
-            <a href="{{ '/events/' . $member->event->id . '/detail/admin' }}"
+            <a href="{{ '/events/' . $member->event->id . '/detail' }}"
               class="event-card relative flex w-full items-center gap-6 overflow-clip rounded-lg border px-6 py-5 shadow-md">
               <div class="flex h-16 w-16 overflow-clip rounded-full bg-black">
                 <img class="object-fill"

@@ -86,7 +86,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/events/{event_id}/member/{member_id}/role', [EventMemberController::class, '']);
         Route::post('/events/{id}/invite', [InvitationController::class, 'create']);
         Route::post('/timetables', [TimetableController::class, 'create']);
-        Route::delete('/timetables/{id}', [TimetableController::class, 'delete']);
+        Route::delete('/timetables/{id}', [TimetableController::class, 'delete'])->name('deleteTimetable');
+        Route::put('/timetables', [TimetableController::class, 'update'])->name('updateTimetable');
 
         Route::get('/admin/events/{id}/edit', [EventController::class, 'editView']);
         Route::get('/admin/events/{id}/detail', [EventController::class, 'detailView']);
@@ -95,6 +96,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/admin/users', [UserController::class, 'deleteFromAdmin']);
         Route::get('/admin/timetables/{id}', [TimetableController::class, 'indexAdminView'])->name('timetablesAdminView');
         Route::get('/admin/users/{id}/edit', [UserController::class, 'editFromAdminView'])->name('editUserFromAdminView');
+        Route::get('/admin/timetables/{id}/edit', [TimetableController::class, 'editView'])->name('editTimetableView');
         Route::put('/admin/users/edit', [UserController::class, 'editFromAdmin'])->name('editUserFromAdmin');
+        Route::get('/admin/event/{event_id}/timetables', [TimetableController::class, 'createFromAdminView'])->name('createTimetableFromAdminView');
     });
 });

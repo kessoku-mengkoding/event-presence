@@ -21,10 +21,39 @@ class TimetableController extends Controller
         ]);
     }
 
+    public function createFromAdminView($event_id)
+    {
+        $event = Event::where('id', $event_id)->first();
+
+        return view('admin.timetables.create', [
+            'event_id' => $event_id,
+            'event' => $event,
+            'title' => 'New Timetable'
+        ]);
+    }
+
     public function indexAdminView($id)
     {
-        $timetables = Timetable::with('event')->where('event_id', $id)->get();
-        return view('admin.timetables.index', compact('timetables'));
+        $timetables = Timetable::where('event_id', $id)->orderBy('created_at', 'desc')->get();
+        $event = Event::where('id', $id)->first();
+        // dd($timetables->toArray());
+
+        return view('admin.timetables.index', [
+            'timetables' => $timetables,
+            'event' => $event
+        ]);
+    }
+
+    public function editView($id)
+    {
+        $timetable = Timetable::where('id', $id)->first();
+        $event = Event::where('id', $timetable->event_id)->first();
+
+        return view('admin.timetables.edit', [
+            'timetable' => $timetable,
+            'event' => $event,
+            'title' => 'Edit Timetable'
+        ]);
     }
 
     public function create(Request $request)
@@ -60,10 +89,7 @@ class TimetableController extends Controller
         $timetable->qr_code_path = $qr_code_path;
         $timetable->save();
 
-        // create notif
-        // NotificationController::create(Auth::id(), '', 'New timetable has been created', 'timetable', []);
-
-        return redirect('/events/' . $request->event_id . '/detail')->with('message', 'Timetable created');
+        return redirect('/admin/timetables/' . $request->event_id)->with('message', 'Jadwal berhasil dibuat');
     }
 
     public function scanQRView($timetable_id)
@@ -75,10 +101,39 @@ class TimetableController extends Controller
         ]);
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string',
+            'lat' => 'required|numeric|gte:-90|lte:90',
+            'long' => 'required|numeric|gte:-1800|lte:180',
+            // 'address' => 'required|string',
+            'radius_meter' => 'required|numeric|gt:0',
+            'lateness_tolerance' => 'required|numeric|gte:0',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
+            'event_id' => 'required',
+        ]);
+
+        Timetable::where('id', $request->id)->update([
+            'title' => $request->title,
+            'latitude' => $request->lat,
+            'longitude' => $request->long,
+            'address' => $request->address,
+            'radius_meter' => $request->radius_meter,
+            'lateness_tolerance' => $request->lateness_tolerance,
+            'start' => $request->start,
+            'end' => $request->end,
+            'event_id' => $request->event_id,
+        ]);
+
+        return redirect()->route('timetablesAdminView', $request->event_id)->with('message', 'Jadwal berhasil diubah');
+    }
+
     public function delete($id)
     {
         Timetable::where('id', $id)->delete();
 
-        return back()->with('message', 'Timetable deleted');
+        return back()->with('message', 'Jadwal berhasil dihapus');
     }
 }

@@ -1,6 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
+  <p>
+    {{ $timetables }}
+  </p>
+<br>
+  <p>
+    {{ $event }}
+  </p>
+
   <a href="/events"
     class="mb-4 inline-block rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Kembali</a>
   <h1 class="text-3xl font-bold">Kegiatan {{ $event->name }} </h1>

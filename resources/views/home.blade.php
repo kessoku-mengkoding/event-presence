@@ -85,18 +85,18 @@ function formatDateTime($inputDateTime)
     </div> --}}
 
     <div class="w-8/12">
-      <div class="mt-12 flex justify-center gap-4">
+      <div class="mt-12 flex justify-center gap-2 md:gap-4">
         <a href="/"
-          class="btn-sm-no-color {{ !$type ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">All</a>
+          class="btn-sm-no-color {{ !$type ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">All</a>
         <a href="/?type=ongoing"
-          class="btn-sm-no-color {{ $type == 'ongoing' ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">Ongoing</a>
+          class="btn-sm-no-color {{ $type == 'ongoing' ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">Ongoing</a>
         <a href="/?type=upcoming"
-          class="btn-sm-no-color {{ $type == 'upcoming' ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">Upcoming</a>
+          class="btn-sm-no-color {{ $type == 'upcoming' ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">Upcoming</a>
         <a href="/?type=missed"
-          class="btn-sm-no-color {{ $type == 'missed' ? 'bg-yellow-50' : '' }} cursor-pointer hover:opacity-50">Missed</a>
+          class="btn-sm-no-color {{ $type == 'missed' ? 'bg-gray-800 text-white' : '' }} cursor-pointer hover:opacity-50">Missed</a>
       </div>
 
-      <div class="mx-auto mt-12 flex max-w-2xl flex-col gap-6 text-center">
+      <div class="mx-auto mt-12 flex w-full md:max-w-2xl flex-col gap-6 text-center">
         @foreach ($timetables->eventmembers as $eventmembers)
           @foreach ($eventmembers->event->timetables as $timetable)
             @if (($type ? $timetable->status == $type : true) && !$timetable->is_presence)
@@ -110,14 +110,33 @@ function formatDateTime($inputDateTime)
                   </div>
                   <div class="text-left">
                     <h1 class="text-2xl font-bold">{{ $timetable->title }}
-                      <span class="text-xs font-thin">
-                        ({{ formatDateTime($timetable->start) }} - {{ formatDateTime($timetable->end) }})
-                      </span>
                     </h1>
+                    <span class="mt-2 text-xs font-thin">
+                      ({{ formatDateTime($timetable->start) }} - {{ formatDateTime($timetable->end) }})
+                    </span>
                     <p class="font-thin">in <span
                         class="text-gradient-mktg font-semibold">{{ $eventmembers->event->name }}</span></p>
                   </div>
-                  <div class="absolute right-3 top-3 rounded-[5px] bg-black px-2 py-1">
+                  @php
+                    $statusClass = '';
+
+                    switch ($timetable->status) {
+                        case 'missed':
+                            $statusClass = 'bg-red-400';
+                            break;
+                        case 'ongoing':
+                            $statusClass = 'bg-yellow-400';
+                            break;
+                        case 'upcoming':
+                            $statusClass = 'bg-green-400';
+                            break;
+                        default:
+                            // Default class or no class if status doesn't match
+                    $statusClass = '';
+                    }
+                  @endphp
+
+                  <div class="{{ $statusClass }} absolute right-3 top-3 rounded-[5px] px-2 py-1">
                     <p class="text-xs text-white">{{ $timetable->status }}</p>
                   </div>
                 </a>
