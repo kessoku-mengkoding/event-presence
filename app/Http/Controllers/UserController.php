@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Presence;
+use App\Models\Resident;
 use App\Models\Timetable;
 use App\Models\User;
 use DateTime;
@@ -27,6 +28,15 @@ class UserController extends Controller
             'users' => $users,
             'is_search' => request()->search ? true : false,
             'search_value' => request()->search,
+        ]);
+    }
+
+    public function createView()
+    {
+        $residents = Resident::where('user_id', null)->get();
+        return view('admin.users.create', [
+            'title' => 'Create User',
+            'residents' => $residents,
         ]);
     }
 
@@ -198,5 +208,20 @@ class UserController extends Controller
         $user->update($request->all());
 
         return back()->with('message', 'Update user success');
+    }
+
+    public function create(Request $request)
+    {
+        $user = new User();
+        $user->username = strtolower($request->username);
+        $user->email = strtolower($request->email);
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        Resident::where('id', $request->resident_id)->update([
+            'user_id' => $user->id
+        ]);
+        
+        return back()->with('message', 'Create user success');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\EventMember;
 use App\Models\Presence;
 use App\Models\Timetable;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,7 @@ class PresenceController extends Controller
 {
     public function indexView($timetable_id)
     {
-        $presences = Presence::with('user')->where('timetable_id', $timetable_id)->get();
+        $presences = Presence::with(['user'])->where('timetable_id', $timetable_id)->get();
 
         return view('presences.index', [
             'title' => 'Presences',
@@ -24,12 +25,18 @@ class PresenceController extends Controller
 
     public function historyView()
     {
-        $presences = User::with(['presences.timetable', 'presences.eventmember.event'])
-            ->where('id', Auth::id())
-            ->first();
+        $presences = Presence::with(['timetable', 'eventmember.event'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($presences as $presence) {
+            $presence->date = Carbon::parse($presence->created_at)->isoFormat('MMMM Do, YYYY');
+        }
 
         return view('presences.history', [
-            'presences' => $presences,
+            'title' => 'Presences',
+            'presences' => $presences
         ]);
     }
 
@@ -38,7 +45,7 @@ class PresenceController extends Controller
         $presences = Presence::with(['user.resident', 'timetable', 'eventmember.event'])
             ->orderBy('created_at', 'desc')
             ->get();
-            
+
         return view('admin.presences.history', [
             'title' => 'Presences',
             'presences' => $presences
