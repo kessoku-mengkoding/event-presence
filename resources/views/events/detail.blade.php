@@ -11,14 +11,14 @@
 
   <a href="/events"
     class="mb-4 inline-block rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto">Kembali</a>
-  <h1 class="text-3xl font-bold">Kegiatan {{ $event->name }} </h1>
-  <p class="mt-4">{{ $event->description }}</p>
-  <p class="mt-4">Qr: {{ $event->qr_code_path }}</p>
-  <img src="{{ $event->qr_code_path }}" alt="Join by QR Code">
+  <h1 class="text-xl md:text-3xl font-bold text-center">Kegiatan {{ $event->name }} </h1>
+  <p class="mt-4 text-center">{{ $event->description }}</p>
+  <p class="mt-4 text-center font-medium mb-2">QRCODE: {{ $event->qr_code_path }}</p>
+  <img src="{{ $event->qr_code_path }}" alt="Join by QR Code" class="mx-center border">
 
   <div class="mt-8">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <div class="flex justify-between justify-items-center bg-white pb-4 dark:bg-gray-900">
+      <div class="flex flex-col sm:flex-row gap-2 justify-between justify-items-center bg-white pb-4 dark:bg-gray-900">
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative mt-1">
           <div class="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
@@ -29,7 +29,7 @@
             </svg>
           </div>
           <input type="text" id="table-search"
-            class="block w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            class="block md:w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 w-full"
             placeholder="Search for items">
         </div>
         <div>

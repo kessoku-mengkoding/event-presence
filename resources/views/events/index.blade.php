@@ -46,7 +46,7 @@
               </div>
               <div class="flex items-center justify-between ">
                 <div class="">
-                  <h1 class="max-w-[160px] xs:max-w-[600px]  text-xl truncate text-ellipsis lg:text-2xl font-semibold">{{ $member->event->name }}</h1>
+                  <h1 class="max-w-[160px] md:max-w-[600px]  text-xl truncate text-ellipsis lg:text-2xl font-semibold">{{ $member->event->name }}</h1>
                   <div>
                     <i class="fa-regular fa-user"></i>
                     <span>{{ sizeof($member->event->eventmembers) }}</span>
