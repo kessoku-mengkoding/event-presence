@@ -40,7 +40,7 @@
             <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl">Admin</span>
           </a>
         </div>
-        <div class="flex items-center">
+        {{-- <div class="flex items-center">
           <div class="ms-3 flex items-center">
             <div>
               <button type="button"
@@ -86,7 +86,7 @@
               </ul>
             </div>
           </div>
-        </div>
+        </div> --}}
       </div>
     </div>
   </nav>
@@ -116,7 +116,8 @@
             <button type="button"
               class="group flex w-full items-center rounded-lg p-2 text-base text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-penduduk" data-collapse-toggle="dropdown-penduduk">
-              <i class="fa-solid fa-people-group flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+              <i
+                class="fa-solid fa-people-group flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
               <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Penduduk</span>
               <svg class="h-2.5 w-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 10 6">
@@ -179,6 +180,17 @@
                   <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Daftar User</span>
                 </a>
               </li>
+              <li>
+                <a href="{{route('createUserView')}}"
+                  class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                  <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Tambah User</span>
+                </a>
+              </li>
             </ul>
           </li>
 
@@ -186,7 +198,8 @@
             <button type="button"
               class="group flex w-full items-center rounded-lg p-2 text-base text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-kegiatan" data-collapse-toggle="dropdown-kegiatan">
-              <i class="fa-solid fa-dungeon flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+              <i
+                class="fa-solid fa-dungeon flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
               <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Kegiatan</span>
               <svg class="h-2.5 w-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 10 6">
@@ -234,14 +247,14 @@
             </button>
             <ul id="dropdown-absensi" class="hidden space-y-2 py-2">
               <li>
-                <a href="/presences"
+                <a href="{{ route('historyPresencesAdminView') }}"
                   class="group flex w-full items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                   <svg class="h-5 w-5 text-gray-600 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                       d="M6 1h10M6 5h10M6 9h10M1.49 1h.01m-.01 4h.01m-.01 4h.01" />
                   </svg>
-                  <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">Daftar absensi</span>
+                  <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right">History Absensi</span>
                 </a>
               </li>
             </ul>

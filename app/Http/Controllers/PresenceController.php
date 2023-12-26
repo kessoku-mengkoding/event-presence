@@ -6,6 +6,7 @@ use App\Models\EventMember;
 use App\Models\Presence;
 use App\Models\Timetable;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,7 @@ class PresenceController extends Controller
 {
     public function indexView($timetable_id)
     {
-        $presences = Presence::with('user')->where('timetable_id', $timetable_id)->get();
+        $presences = Presence::with(['user'])->where('timetable_id', $timetable_id)->get();
 
         return view('presences.index', [
             'title' => 'Presences',
@@ -24,13 +25,30 @@ class PresenceController extends Controller
 
     public function historyView()
     {
-        $user_presences = User::with(['presences.timetable', 'presences.eventmember.event'])
-            ->where('id', Auth::id())
-            ->first();
+        $presences = Presence::with(['timetable', 'eventmember.event'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($presences as $presence) {
+            $presence->date = Carbon::parse($presence->created_at)->isoFormat('MMMM Do, YYYY');
+        }
 
         return view('presences.history', [
-            'user' => $user_presences,
-            'title' => 'History'
+            'title' => 'Presences',
+            'presences' => $presences
+        ]);
+    }
+
+    public function historyAdminView()
+    {
+        $presences = Presence::with(['user.resident', 'timetable', 'eventmember.event'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.presences.history', [
+            'title' => 'Presences',
+            'presences' => $presences
         ]);
     }
 
@@ -70,7 +88,7 @@ class PresenceController extends Controller
         // !! validate presence. time, location, etc
         // validate location
         $is_valid = true;
-        $distance = $this->haversineGreatCircleDistance($timetable->latitude, $timetable->longitude, $request->lat, $request->long);
+        $distance = $this->haversineGreatCircleDistance($timetable->latitude, $timetable->longitude, $request->lat, $request->long) / 10;
         if ($distance > $timetable->radius_meter) {
             $is_valid = false;
         }

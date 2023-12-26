@@ -81,6 +81,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/events/admin', [EventController::class, 'indexAdminView'])->name('eventsAdminView');
         Route::get('/events/create', [EventController::class, 'createView']);
         Route::post('/events', [EventController::class, 'create']);
+        Route::post('/users', [UserController::class, 'create'])->name('createUser');
         Route::delete('/events/{id}', [EventController::class, 'delete']);
         Route::delete('/events/{event_id}/member/{member_id}', [EventMemberController::class, 'delete'])->name('deleteMember');
         Route::put('/events/{event_id}/member/{member_id}/role', [EventMemberController::class, '']);
@@ -100,5 +101,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/admin/users/edit', [UserController::class, 'editFromAdmin'])->name('editUserFromAdmin');
         Route::get('/admin/event/{event_id}/timetables', [TimetableController::class, 'createFromAdminView'])->name('createTimetableFromAdminView');
         Route::get('/admin/timetables/{id}/detail', [TimetableController::class, 'detailAdminView'])->name('detailTimetableAdminView');
+        Route::get('/admin/presences/history', [PresenceController::class, 'historyAdminView'])->name('historyPresencesAdminView');
+        Route::get('/admin/users/create', [UserController::class, 'createView'])->name('createUserView');
     });
 });

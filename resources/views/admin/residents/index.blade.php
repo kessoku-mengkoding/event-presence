@@ -84,7 +84,7 @@
             </td>
             <td class="px-6 py-4 text-center">
               @if ($resident->user_id)
-                <i class="fa-solid fa-circle-check cursor-pointer"
+                <i class="text-green-500 fa-solid fa-circle-check cursor-pointer"
                   data-popover-target="popover-default{{ $resident->id }}"></i>
 
                 <div data-popover id="popover-default{{ $resident->id }}" role="tooltip"

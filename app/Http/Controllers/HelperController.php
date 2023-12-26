@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -20,5 +21,12 @@ class HelperController extends Controller
         $interval = $datetime1->diff($datetime2);
 
         return $interval->d . ' days ' . $interval->h . ' hours ' . $interval->i . ' minutes ' . $interval->s . ' seconds';
+    }
+
+    public static function getDatetimeNow()
+    {
+        $timezone = 'Asia/Makassar';
+        $currentDateTime = Carbon::now($timezone);
+        return $currentDateTime;
     }
 }
